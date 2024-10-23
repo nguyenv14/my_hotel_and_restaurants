@@ -2,15 +2,15 @@ import 'package:my_hotel_and_restaurants/data/network/base_api_services.dart';
 import 'package:my_hotel_and_restaurants/data/network/network_api_services.dart';
 import 'package:my_hotel_and_restaurants/data/response/app_url.dart';
 import 'package:my_hotel_and_restaurants/data/response/dto_object.dart';
-import 'package:my_hotel_and_restaurants/repository/Brand/brand_repository.dart';
+import 'package:my_hotel_and_restaurants/repository/Restaurant/restaurant_repository.dart';
 
-class BrandRepositoryImp implements BrandRepository {
+class RestaurantRepositoryImp implements RestaurantRepository {
   final BaseApiServices _apiServices = NetworkApiService();
-
-  Future<ObjectDTO> updateUser(Map<Object?, Object> data) async {
+  @override
+  Future<ObjectDTO> fetchRestaurantByArea(int index) async {
     try {
-      ObjectDTO objectDTO =
-          await _apiServices.getPostApiResponse(AppUrl.updateCustomer, data);
+      ObjectDTO objectDTO = await _apiServices
+          .getGetApiResponse("${AppUrl.restaurantListByArea}?area_id=7");
       return objectDTO;
     } catch (e) {
       throw Exception(e);
@@ -18,9 +18,10 @@ class BrandRepositoryImp implements BrandRepository {
   }
 
   @override
-  Future<ObjectDTO> getBrand() async {
+  Future<ObjectDTO> fetchRestaurantById(int index) async {
     try {
-      ObjectDTO objectDTO = await _apiServices.getGetApiResponse(AppUrl.brand);
+      ObjectDTO objectDTO = await _apiServices.getGetApiResponse(
+          "${AppUrl.restaurantById}?restaurant_id=" + index.toString());
       return objectDTO;
     } catch (e) {
       throw Exception(e);

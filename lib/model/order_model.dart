@@ -41,7 +41,6 @@ class OrderModel {
     final Map<String, dynamic> orderDetailJson = json['orderDetail'] ?? {};
     final OrderDetailsModel orderDetail =
         OrderDetailsModel.fromJson(orderDetailJson);
-    print("Order");
     return OrderModel(
       orderId: json['orderId'],
       startDay: json['startDay'],

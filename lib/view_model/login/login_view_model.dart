@@ -73,7 +73,7 @@ class LoginViewModel extends ChangeNotifier {
   }
 
   Future<ObjectDTO> signUp(String customerEmail, String customerPassword,
-      String customerPhone, String customer_name) async {
+      String customerPhone, String customerName) async {
     // final CustomerP
     try {
       setSignUpLoading(true);
@@ -81,7 +81,7 @@ class LoginViewModel extends ChangeNotifier {
         "customer_email": customerEmail,
         "customer_password": customerPassword,
         "customer_phone": customerPhone,
-        "customer_name": customer_name,
+        "customer_name": customerName,
       };
       final response = await authRepository.signUp(body);
       setSignUpLoading(false);
@@ -107,10 +107,9 @@ class LoginViewModel extends ChangeNotifier {
       User? user = userCredential.user;
       // print(user!.email!);
       // print(user.displayName!);
-      var email = user!.email;
       var body = {
         "customer_password": "",
-        "customer_email": user.email!,
+        "customer_email": user!.email!,
         "customer_phone": user.phoneNumber ?? "",
         "customer_name": user.displayName ?? "Người Dùng 1",
       };

@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:my_hotel_and_restaurants/configs/routes/routes.dart';
@@ -20,6 +21,9 @@ import 'package:my_hotel_and_restaurants/repository/Hotel/hotel_repository.dart'
 import 'package:my_hotel_and_restaurants/repository/Hotel/implement_hotel_repository.dart';
 import 'package:my_hotel_and_restaurants/repository/Order/implement_order_repository.dart';
 import 'package:my_hotel_and_restaurants/repository/Order/order_repository.dart';
+import 'package:my_hotel_and_restaurants/repository/Restaurant/implement_restaurant_repository.dart';
+import 'package:my_hotel_and_restaurants/repository/Restaurant/restaurant_repository.dart';
+import 'package:my_hotel_and_restaurants/utils/constant.dart';
 import 'package:my_hotel_and_restaurants/view/splash/splash_screen.dart';
 import 'package:my_hotel_and_restaurants/view_model/area_view_model.dart';
 import 'package:my_hotel_and_restaurants/view_model/banner_view_model.dart';
@@ -30,12 +34,14 @@ import 'package:my_hotel_and_restaurants/view_model/favourite_view_model.dart';
 import 'package:my_hotel_and_restaurants/view_model/hotel_view_model.dart';
 import 'package:my_hotel_and_restaurants/view_model/login/login_view_model.dart';
 import 'package:my_hotel_and_restaurants/view_model/order_view_model.dart';
+import 'package:my_hotel_and_restaurants/view_model/restaurant_view_model.dart';
 import 'package:provider/provider.dart';
 
 GetIt getIt = GetIt.instance;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = stripePublicKey;
   await GetStorage.init();
   await Firebase.initializeApp(
       options: FirebaseOptions(
@@ -54,6 +60,8 @@ void main() async {
   getIt
       .registerLazySingleton<CustomerRepository>(() => CustomerRepositoryImp());
   getIt.registerLazySingleton<BrandRepository>(() => BrandRepositoryImp());
+  getIt.registerLazySingleton<RestaurantRepository>(
+      () => RestaurantRepositoryImp());
   runApp(const MyApp());
 }
 
@@ -91,6 +99,10 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => BrandViewModel(brandRepository: getIt()),
+        ),
+        ChangeNotifierProvider(
+          create: (context) =>
+              RestaurantViewModel(restaurantRepository: getIt()),
         )
       ],
       child: MaterialApp(

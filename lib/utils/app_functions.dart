@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:my_hotel_and_restaurants/model/coupon_model.dart';
 import 'package:my_hotel_and_restaurants/model/evaluate_model.dart';
 import 'package:my_hotel_and_restaurants/model/order_details_model.dart';
-import 'package:my_hotel_and_restaurants/model/order_model.dart';
 import 'package:my_hotel_and_restaurants/model/service_change_model.dart';
 import 'package:my_hotel_and_restaurants/model/type_room_model.dart';
 
@@ -64,7 +63,7 @@ class AppFunctions {
   static String generateOrderCode() {
     Random random = Random();
     int ran = 1000 + random.nextInt(9000);
-    return "MYHOTEL" + ran.toString();
+    return "MYHOTEL$ran";
   }
 
   static String deleteSpaceWhite(String text) {

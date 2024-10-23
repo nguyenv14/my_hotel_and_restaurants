@@ -1,9 +1,6 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:cherry_toast/cherry_toast.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:my_hotel_and_restaurants/configs/color.dart';
@@ -72,8 +69,8 @@ class _SearchScreenState extends State<SearchScreen> {
                     hintStyle:
                         MyTextStyle.textStyle(fontSize: 16, color: Colors.grey),
                     border: InputBorder.none,
-                    prefixIcon: Icon(FontAwesomeIcons.search),
-                    suffixIcon: Icon(FontAwesomeIcons.microphone)),
+                    prefixIcon: const Icon(FontAwesomeIcons.search),
+                    suffixIcon: const Icon(FontAwesomeIcons.microphone)),
               ),
             ),
           ],
@@ -112,7 +109,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               categoryIndex, textMain.text);
                         },
                         hintText: "Category",
-                        items: [
+                        items: const [
                           "Tất cả",
                           "Khách sạn",
                           "Khách sạn căn hộ",

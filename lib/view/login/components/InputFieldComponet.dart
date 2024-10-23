@@ -28,7 +28,6 @@ class InputFieldComponent extends StatefulWidget {
 }
 
 class _InputFieldComponentState extends State<InputFieldComponent> {
-  bool _isFocused = false;
   final FocusNode _focusNode = FocusNode();
   bool password = false;
   @override
@@ -38,9 +37,7 @@ class _InputFieldComponentState extends State<InputFieldComponent> {
   }
 
   void _onFocusChange() {
-    setState(() {
-      _isFocused = _focusNode.hasFocus;
-    });
+    setState(() {});
   }
 
   @override

@@ -33,11 +33,11 @@ class DetailProductScreen extends StatefulWidget {
 }
 
 class _DetailProductScreenState extends State<DetailProductScreen> {
-  static final LatLng _kMapCenter =
-      LatLng(19.018255973653343, 72.84793849278007);
+  // static final LatLng _kMapCenter =
+  //     LatLng(19.018255973653343, 72.84793849278007);
 
-  static final CameraPosition _kInitialPosition =
-      CameraPosition(target: _kMapCenter, zoom: 11.0, tilt: 0, bearing: 0);
+  // static final CameraPosition _kInitialPosition =
+  //     CameraPosition(target: _kMapCenter, zoom: 11.0, tilt: 0, bearing: 0);
   int indexCurrentGallery = 0;
   @override
   void initState() {
@@ -292,8 +292,10 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                   ),
                   extendBody: true,
                   bottomNavigationBar: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 10),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10),
                     decoration: BoxDecoration(
                         color: ColorData.myColor,
                         borderRadius: BorderRadius.circular(20)),

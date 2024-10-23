@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobkit_dashed_border/mobkit_dashed_border.dart';
@@ -9,8 +8,6 @@ import 'package:my_hotel_and_restaurants/data/response/app_url.dart';
 import 'package:my_hotel_and_restaurants/model/order_model.dart';
 import 'package:my_hotel_and_restaurants/utils/app_functions.dart';
 import 'package:my_hotel_and_restaurants/view/main_screen.dart';
-import 'package:my_hotel_and_restaurants/view/product/components/line_component.dart';
-import 'package:provider/provider.dart';
 
 class ReceiptPage extends StatefulWidget {
   final OrderModel orderModel;

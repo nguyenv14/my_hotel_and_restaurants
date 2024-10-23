@@ -42,7 +42,6 @@ class OrderDetailsModel {
     final RoomModel roomModels = RoomModel.fromJson(roomJson);
     final Map<String, dynamic> rTypeJson = json['roomType'] ?? {};
     final RoomTypeModel roomTypeModels = RoomTypeModel.fromJson(rTypeJson);
-    print("Order_detail");
     return OrderDetailsModel(
       orderDetailsId: json['order_details_id'],
       orderCode: json['order_code'],

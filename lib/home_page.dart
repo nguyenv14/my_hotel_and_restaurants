@@ -1,7 +1,7 @@
 import 'package:cherry_toast/cherry_toast.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:my_hotel_and_restaurants/configs/extensions.dart';
 import 'package:my_hotel_and_restaurants/configs/routes/routes_name.dart';
 import 'package:my_hotel_and_restaurants/configs/text_style.dart';
@@ -11,7 +11,6 @@ import 'package:my_hotel_and_restaurants/main.dart';
 import 'package:my_hotel_and_restaurants/model/banner_model.dart';
 import 'package:my_hotel_and_restaurants/model/hotel_model.dart';
 import 'package:my_hotel_and_restaurants/utils/app_functions.dart';
-import 'package:my_hotel_and_restaurants/utils/user_db.dart';
 import 'package:my_hotel_and_restaurants/view_model/area_view_model.dart';
 import 'package:my_hotel_and_restaurants/view_model/banner_view_model.dart';
 import 'package:my_hotel_and_restaurants/view_model/customer_view_model.dart';
@@ -39,6 +38,39 @@ class _HomePageState extends State<HomePage> {
   late HotelViewModel hotelViewModelByType;
   late HotelViewModel hotelViewModelByArea;
   late AreaViewModel areaViewModel;
+  String? _currentAddress;
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Error.')));
+      return false;
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('Error.')));
+        return false;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Error.')));
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final favouriteViewModel =
@@ -47,7 +79,7 @@ class _HomePageState extends State<HomePage> {
         Provider.of<CustomerViewModel>(context, listen: true);
 
     return Scaffold(
-      backgroundColor: Color.fromRGBO(245, 246, 249, 1),
+      backgroundColor: const Color.fromRGBO(245, 246, 249, 1),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 0),
@@ -61,20 +93,19 @@ class _HomePageState extends State<HomePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'HELLO THERE',
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          _currentAddress ?? "",
+                          style: MyTextStyle.textStyle(
+                              fontSize: 15, color: Colors.grey),
+                        ),
+                        Text(
+                            "adasđ${customerProvider.customerModel.customer_name!}",
                             style: MyTextStyle.textStyle(
-                                fontSize: 15, color: Colors.grey),
-                          ),
-                          Text(customerProvider.customerModel.customer_name!,
-                              style: MyTextStyle.textStyle(
-                                  fontSize: 18, color: Colors.blueGrey))
-                        ],
-                      ),
+                                fontSize: 18, color: Colors.blueGrey))
+                      ],
                     ),
                     Container(
                       padding: const EdgeInsets.all(10),
@@ -105,7 +136,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 child: TextField(
                   decoration: InputDecoration(
-                      hintText: "Explore Something Fun",
+                      hintText: "Explore Something Fun á đù",
                       hintStyle: MyTextStyle.textStyle(
                           fontSize: 15, color: Colors.grey),
                       border: InputBorder.none,
@@ -399,7 +430,7 @@ class _HomePageState extends State<HomePage> {
               border: Border.all(
                   color: index == indexHotelType
                       ? Colors.blueGrey.withOpacity(0.4)
-                      : Color.fromRGBO(232, 234, 241, 1),
+                      : const Color.fromRGBO(232, 234, 241, 1),
                   width: 1),
             ),
             child: Text(
@@ -411,6 +442,7 @@ class _HomePageState extends State<HomePage> {
             )));
   }
 
+  // ignore: non_constant_identifier_names
   Widget WidgetHotelByTypeView(HotelModel hotelModel, BuildContext context,
       HotelViewModel hotelViewModel, FavouriteViewModel favouriteViewModel) {
     return GestureDetector(
@@ -429,7 +461,7 @@ class _HomePageState extends State<HomePage> {
             decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border.all(
-                    color: Color.fromRGBO(232, 234, 241, 1), width: 1),
+                    color: const Color.fromRGBO(232, 234, 241, 1), width: 1),
                 borderRadius: BorderRadius.circular(10)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -580,12 +612,12 @@ class _HomePageState extends State<HomePage> {
                             child: favouriteViewModel
                                         .checkFavouriteId(hotelModel.hotelId) ==
                                     false
-                                ? Icon(
+                                ? const Icon(
                                     FontAwesomeIcons.heart,
                                     size: 20,
                                     color: Colors.pinkAccent,
                                   )
-                                : Icon(
+                                : const Icon(
                                     FontAwesomeIcons.solidHeart,
                                     size: 20,
                                     color: Colors.pinkAccent,
@@ -612,8 +644,8 @@ class _HomePageState extends State<HomePage> {
       child: Container(
         decoration: BoxDecoration(
             color: Colors.white,
-            border:
-                Border.all(color: Color.fromRGBO(232, 234, 241, 1), width: 1),
+            border: Border.all(
+                color: const Color.fromRGBO(232, 234, 241, 1), width: 1),
             borderRadius: BorderRadius.circular(10)),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -729,7 +761,7 @@ class _HomePageState extends State<HomePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
+                      SizedBox(
                         width: context.mediaQueryWidth * 0.31,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -771,30 +803,31 @@ class _HomePageState extends State<HomePage> {
                             favouriteViewModel
                                 .deleteFavouriteId(hotelModel.hotelId);
                             CherryToast.success(
-                              title: Text("Đã xóa ra khỏi mục yêu thích!"),
+                              title:
+                                  const Text("Đã xóa ra khỏi mục yêu thích!"),
                             ).show(context);
                           } else {
                             favouriteViewModel
                                 .addFavouriteId(hotelModel.hotelId);
                             CherryToast.success(
-                              title: Text("Đã thêm vào mục yêu thích!"),
+                              title: const Text("Đã thêm vào mục yêu thích!"),
                             ).show(context);
                           }
                         },
                         child: Container(
-                          padding: EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                               color: Colors.pink.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(10)),
                           child: favouriteViewModel
                                       .checkFavouriteId(hotelModel.hotelId) ==
                                   false
-                              ? Icon(
+                              ? const Icon(
                                   FontAwesomeIcons.heart,
                                   color: Colors.pinkAccent,
                                   size: 17,
                                 )
-                              : Icon(
+                              : const Icon(
                                   FontAwesomeIcons.solidHeart,
                                   color: Colors.pinkAccent,
                                   size: 17,

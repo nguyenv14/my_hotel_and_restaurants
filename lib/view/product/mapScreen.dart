@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:my_hotel_and_restaurants/configs/extensions.dart';
 
 class MapScreen extends StatelessWidget {
   final List<double> listLatLong;
@@ -8,10 +9,9 @@ class MapScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Khởi tạo vị trí ban đầu của camera
     final CameraPosition _kInitialPosition = CameraPosition(
       target: LatLng(listLatLong[0], listLatLong[1]),
-      zoom: 14.0, // Bạn có thể điều chỉnh mức zoom theo ý muốn
+      zoom: 14.0,
     );
 
     // Tạo marker
@@ -21,12 +21,14 @@ class MapScreen extends StatelessWidget {
     );
 
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20),
-      width: MediaQuery.of(context).size.width,
+      width: context.mediaQueryWidth,
       height: MediaQuery.of(context).size.height * 0.2,
-      child: GoogleMap(
-        initialCameraPosition: _kInitialPosition,
-        markers: {_marker},
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: GoogleMap(
+          initialCameraPosition: _kInitialPosition,
+          markers: {_marker},
+        ),
       ),
     );
   }

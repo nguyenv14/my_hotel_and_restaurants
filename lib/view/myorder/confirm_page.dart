@@ -1,15 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
-import 'package:my_hotel_and_restaurants/configs/extensions.dart';
-import 'package:my_hotel_and_restaurants/configs/text_style.dart';
 import 'package:my_hotel_and_restaurants/data/response/status.dart';
 import 'package:my_hotel_and_restaurants/main.dart';
 import 'package:my_hotel_and_restaurants/utils/user_db.dart';
 import 'package:my_hotel_and_restaurants/view/myorder/components/order_component.dart';
-import 'package:my_hotel_and_restaurants/view/product/components/line_component.dart';
 import 'package:my_hotel_and_restaurants/view_model/order_view_model.dart';
 import 'package:provider/provider.dart';
 

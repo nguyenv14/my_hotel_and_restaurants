@@ -1,10 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
-import 'package:mobkit_dashed_border/mobkit_dashed_border.dart';
 import 'package:my_hotel_and_restaurants/configs/extensions.dart';
 import 'package:my_hotel_and_restaurants/configs/routes/routes_name.dart';
 import 'package:my_hotel_and_restaurants/configs/text_style.dart';
@@ -46,7 +43,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   TextEditingController emailEditingController =
       TextEditingController(text: CustomerDB.getCustomer()!.customer_email!);
   TextEditingController phoneEdittingController = TextEditingController(
-      text: "0" + CustomerDB.getCustomer()!.customer_phone.toString());
+      text: "0${CustomerDB.getCustomer()!.customer_phone}");
   TextEditingController requestSpecial = TextEditingController();
   bool valuefirst = false;
   bool valuesecond = false;
@@ -97,11 +94,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     style:
                         MyTextStyle.textStyle(fontSize: 13, color: Colors.grey),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 4,
                   ),
                   Text(
-                    AppFunctions.calculatePrice(widget.roomTypeModel) + "đ",
+                    "${AppFunctions.calculatePrice(widget.roomTypeModel)}đ",
                     style: MyTextStyle.textStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -113,7 +110,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 onTap: details.onStepContinue,
                 child: Container(
                   width: context.mediaQueryWidth * 0.4,
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     vertical: 6,
                   ),
                   decoration: BoxDecoration(
@@ -139,7 +136,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 onTap: details.onStepCancel,
                 child: Container(
                   width: context.mediaQueryWidth * 0.4,
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     vertical: 6,
                   ),
                   decoration: BoxDecoration(
@@ -161,13 +158,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
               GestureDetector(
                 onTap: () {
                   if (_result == 4) {
-                    print(
-                      dataTimeRange.start.day.toString() +
-                          "-" +
-                          dataTimeRange.start.month.toString() +
-                          "-" +
-                          dataTimeRange.start.year.toString(),
-                    );
+                    // print(
+                    //   dataTimeRange.start.day.toString() +
+                    //       "-" +
+                    //       dataTimeRange.start.month.toString() +
+                    //       "-" +
+                    //       dataTimeRange.start.year.toString(),
+                    // );
                     // Navigator.pushNamed(context, RoutesName.receiptPage);
                     // print(!orderViewModel.isCheckOut);
                     orderViewModel.checkOut(
@@ -190,7 +187,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 },
                 child: Container(
                   width: context.mediaQueryWidth * 0.4,
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     vertical: 6,
                   ),
                   decoration: BoxDecoration(

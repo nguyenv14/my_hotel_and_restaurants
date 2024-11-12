@@ -8,11 +8,11 @@ class MenuComponent extends StatefulWidget {
   final double price;
 
   const MenuComponent({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.nameMeal,
     required this.price,
-  }) : super(key: key);
+  });
 
   @override
   State<MenuComponent> createState() => _MenuComponentState();

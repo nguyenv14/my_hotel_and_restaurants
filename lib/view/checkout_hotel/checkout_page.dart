@@ -2,10 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
+import 'package:my_hotel_and_restaurants/configs/color.dart';
 import 'package:my_hotel_and_restaurants/configs/extensions.dart';
 import 'package:my_hotel_and_restaurants/configs/routes/routes_name.dart';
 import 'package:my_hotel_and_restaurants/configs/text_style.dart';
-import 'package:my_hotel_and_restaurants/data/response/app_url.dart';
 import 'package:my_hotel_and_restaurants/data/response/status.dart';
 import 'package:my_hotel_and_restaurants/main.dart';
 import 'package:my_hotel_and_restaurants/model/coupon_model.dart';
@@ -16,7 +16,8 @@ import 'package:my_hotel_and_restaurants/model/room_model.dart';
 import 'package:my_hotel_and_restaurants/model/type_room_model.dart';
 import 'package:my_hotel_and_restaurants/utils/app_functions.dart';
 import 'package:my_hotel_and_restaurants/utils/user_db.dart';
-import 'package:my_hotel_and_restaurants/view/checkout_hotel/componets/alert_dialog_coupon.dart';
+import 'package:my_hotel_and_restaurants/view/checkout_hotel/components/alert_dialog_coupon.dart';
+import 'package:my_hotel_and_restaurants/view/components/button_leading_component.dart';
 import 'package:my_hotel_and_restaurants/view_model/coupon_view_model.dart';
 import 'package:my_hotel_and_restaurants/view_model/order_view_model.dart';
 import 'package:provider/provider.dart';
@@ -91,8 +92,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 children: [
                   Text(
                     "Sub total",
-                    style:
-                        MyTextStyle.textStyle(fontSize: 13, color: Colors.grey),
+                    style: MyTextStyle.textStyle(
+                        fontSize: 13,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(
                     height: 4,
@@ -102,7 +105,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     style: MyTextStyle.textStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: Colors.red),
+                        color: ColorData.myColor),
                   ),
                 ],
               ),
@@ -114,9 +117,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     vertical: 6,
                   ),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.blueGrey,
-                  ),
+                      borderRadius: BorderRadius.circular(10),
+                      color: ColorData.myColor),
                   // color: Colors.amber,
                   child: Center(
                     child: Text(
@@ -158,15 +160,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
               GestureDetector(
                 onTap: () {
                   if (_result == 4) {
-                    // print(
-                    //   dataTimeRange.start.day.toString() +
-                    //       "-" +
-                    //       dataTimeRange.start.month.toString() +
-                    //       "-" +
-                    //       dataTimeRange.start.year.toString(),
-                    // );
-                    // Navigator.pushNamed(context, RoutesName.receiptPage);
-                    // print(!orderViewModel.isCheckOut);
                     orderViewModel.checkOut(
                         CustomerDB.getCustomer()!.customer_id!,
                         widget.roomTypeModel.typeRoomId,
@@ -192,7 +185,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.blueGrey,
+                    color: ColorData.myColor,
                   ),
                   // color: Colors.amber,
                   child: Center(
@@ -254,40 +247,55 @@ class _CheckoutPageState extends State<CheckoutPage> {
         return orderViewModel.isCheckOut == true
             ? Scaffold(
                 body: Center(
-                  child: Container(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Lottie.asset("assets/raw/waiting.json"),
-                        Center(
-                          child: Text(
-                            "Vui lòng chờ đơn đặt đang được xử lý!",
-                            style: MyTextStyle.textStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.redAccent),
-                          ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Lottie.asset("assets/raw/waiting.json"),
+                      Center(
+                        child: Text(
+                          "Vui lòng chờ đơn đặt đang được xử lý!",
+                          style: MyTextStyle.textStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.redAccent),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               )
             : Scaffold(
+                backgroundColor: ColorData.backgroundColor,
                 appBar: AppBar(
-                  backgroundColor: Colors.blueGrey,
-                  title: Text(
-                    "Booking Details",
-                    style: MyTextStyle.textStyle(
-                        fontSize: 18, color: Colors.white),
+                  backgroundColor: ColorData.backgroundColor,
+                  shadowColor: ColorData.backgroundColor,
+                  surfaceTintColor: ColorData.backgroundColor,
+                  scrolledUnderElevation: 0,
+                  automaticallyImplyLeading: false,
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const ButtonLeadingComponent(
+                        iconData: Icons.arrow_back_ios_new_rounded,
+                      ),
+                      Text(
+                        "Booking room",
+                        style: MyTextStyle.textStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold),
+                      ),
+                      ButtonLeadingComponent(
+                        iconData: Icons.menu,
+                        onPress: () {},
+                      )
+                    ],
                   ),
                 ),
                 body: Stepper(
                   elevation: 3, //Horizontal Impact
                   // margin: const EdgeInsets.all(20), //vertical impact
-                  connectorColor: MaterialStateProperty.resolveWith((states) {
-                    return Colors.blueGrey;
+                  connectorColor: WidgetStateProperty.resolveWith((states) {
+                    return ColorData.myColor;
                   }),
 
                   controlsBuilder: controlBuilders,
@@ -308,431 +316,405 @@ class _CheckoutPageState extends State<CheckoutPage> {
                               color: Colors.grey,
                               fontWeight: FontWeight.bold),
                         ),
-                        content: Container(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Booking Details",
-                                style: MyTextStyle.textStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                        color: Colors.grey, width: 0.5)),
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 10),
-                                      child: Row(
-                                        children: [
-                                          CachedNetworkImage(
-                                            imageUrl: AppUrl.hotelImage +
-                                                widget.hotelModel.hotelImage,
-                                            imageBuilder:
-                                                (context, imageProvider) =>
-                                                    Container(
-                                              width: context.mediaQueryWidth *
-                                                  0.25,
-                                              height: context.mediaQueryHeight *
-                                                  0.12,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                image: DecorationImage(
-                                                  image: imageProvider,
-                                                  fit: BoxFit.cover,
-                                                ),
+                        content: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Booking Details",
+                              style: MyTextStyle.textStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      color: Colors.grey, width: 0.5)),
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 10),
+                                    child: Row(
+                                      children: [
+                                        CachedNetworkImage(
+                                          imageUrl:
+                                              widget.hotelModel.hotelImage,
+                                          imageBuilder:
+                                              (context, imageProvider) =>
+                                                  Container(
+                                            width:
+                                                context.mediaQueryWidth * 0.26,
+                                            height:
+                                                context.mediaQueryHeight * 0.10,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              image: DecorationImage(
+                                                image: imageProvider,
+                                                fit: BoxFit.cover,
                                               ),
                                             ),
-                                            placeholder: (context, url) =>
-                                                CircularProgressIndicator(),
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    Icon(Icons.error),
                                           ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Container(
-                                            height:
-                                                context.mediaQueryHeight * 0.12,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  widget.hotelModel.hotelName,
-                                                  style: MyTextStyle.textStyle(
-                                                      fontSize: 14,
-                                                      color: Colors.blueGrey,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                Container(
-                                                  width:
-                                                      context.mediaQueryWidth *
-                                                          0.5,
-                                                  child: Text(
-                                                    widget.roomModel.roomName,
-                                                    style:
-                                                        MyTextStyle.textStyle(
-                                                            fontSize: 12,
-                                                            color:
-                                                                Colors.black),
-                                                  ),
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        itemOptionOrderHotel(
-                                                            FontAwesomeIcons
-                                                                .addressBook,
-                                                            widget.roomModel
-                                                                    .roomAmountOfPeople
-                                                                    .toString() +
-                                                                " guest"),
-                                                        SizedBox(
-                                                          height: 5,
-                                                        ),
-                                                        itemOptionOrderHotel(
-                                                            FontAwesomeIcons
-                                                                .bed,
-                                                            widget.roomTypeModel
-                                                                        .typeRoomBed ==
-                                                                    1
-                                                                ? "Giường đơn"
-                                                                : widget.roomTypeModel
-                                                                            .typeRoomBed ==
-                                                                        2
-                                                                    ? "Giường đôi"
-                                                                    : "Đơn hoặc đôi")
-                                                      ],
-                                                    ),
-                                                    SizedBox(
-                                                      width: context
-                                                              .mediaQueryWidth *
-                                                          0.05,
-                                                    ),
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        itemOptionOrderHotel(
-                                                            FontAwesomeIcons
-                                                                .layerGroup,
-                                                            widget.roomModel
-                                                                    .roomAcreage
-                                                                    .toString() +
-                                                                "m2"),
-                                                        SizedBox(
-                                                          height: 5,
-                                                        ),
-                                                        itemOptionOrderHotel(
-                                                            FontAwesomeIcons
-                                                                .eye,
-                                                            widget.roomModel
-                                                                .roomView)
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      // width: ,
-                                      height: 0.5,
-                                      color: Colors.grey.shade400,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 10),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Column(
+                                          placeholder: (context, url) =>
+                                              const CircularProgressIndicator(),
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(Icons.error),
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        SizedBox(
+                                          height:
+                                              context.mediaQueryHeight * 0.12,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                "Check in",
+                                                widget.hotelModel.hotelName,
                                                 style: MyTextStyle.textStyle(
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.grey),
+                                                    fontSize: 14,
+                                                    color: Colors.blueGrey,
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
-                                              GestureDetector(
-                                                onTap: pickDateRange,
+                                              SizedBox(
+                                                width: context.mediaQueryWidth *
+                                                    0.5,
                                                 child: Text(
-                                                  start.day.toString() +
-                                                      "/" +
-                                                      start.month.toString() +
-                                                      "/" +
-                                                      start.year.toString(),
+                                                  widget.roomModel.roomName,
                                                   style: MyTextStyle.textStyle(
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                      fontSize: 12,
                                                       color: Colors.black),
                                                 ),
-                                              )
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      itemOptionOrderHotel(
+                                                          FontAwesomeIcons
+                                                              .addressBook,
+                                                          "${widget.roomModel.roomAmountOfPeople} guest"),
+                                                      const SizedBox(
+                                                        height: 5,
+                                                      ),
+                                                      itemOptionOrderHotel(
+                                                          FontAwesomeIcons.bed,
+                                                          widget.roomTypeModel
+                                                                      .typeRoomBed ==
+                                                                  1
+                                                              ? "Giường đơn"
+                                                              : widget.roomTypeModel
+                                                                          .typeRoomBed ==
+                                                                      2
+                                                                  ? "Giường đôi"
+                                                                  : "Đơn hoặc đôi")
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    width: context
+                                                            .mediaQueryWidth *
+                                                        0.05,
+                                                  ),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      itemOptionOrderHotel(
+                                                          FontAwesomeIcons
+                                                              .layerGroup,
+                                                          "${widget.roomModel.roomAcreage}m2"),
+                                                      const SizedBox(
+                                                        height: 5,
+                                                      ),
+                                                      itemOptionOrderHotel(
+                                                          FontAwesomeIcons.eye,
+                                                          widget.roomModel
+                                                              .roomView)
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
                                             ],
                                           ),
-                                          Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 10, vertical: 5),
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                border: Border.all(
-                                                    color: Colors.grey,
-                                                    width: 0.5)),
-                                            child: Row(
-                                              children: [
-                                                Icon(
-                                                  FontAwesomeIcons.solidMoon,
-                                                  color: Colors.blueAccent,
-                                                ),
-                                                Text(
-                                                  differenceDay.inDays
-                                                      .toString(),
-                                                  style: MyTextStyle.textStyle(
-                                                      fontSize: 16,
-                                                      color: Colors.blueAccent,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    // width: ,
+                                    height: 0.5,
+                                    color: Colors.grey.shade400,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Check in",
+                                              style: MyTextStyle.textStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.grey),
                                             ),
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
-                                              Text(
-                                                "Check out",
-                                                style: MyTextStyle.textStyle(
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.grey),
-                                              ),
-                                              Text(
-                                                end.day.toString() +
-                                                    "/" +
-                                                    end.month.toString() +
-                                                    "/" +
-                                                    end.year.toString(),
+                                            GestureDetector(
+                                              onTap: pickDateRange,
+                                              child: Text(
+                                                "${start.day}/${start.month}/${start.year}",
                                                 style: MyTextStyle.textStyle(
                                                     fontSize: 15,
                                                     fontWeight: FontWeight.bold,
                                                     color: Colors.black),
                                               ),
+                                            )
+                                          ],
+                                        ),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 5),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              border: Border.all(
+                                                  color: Colors.grey,
+                                                  width: 0.5)),
+                                          child: Row(
+                                            children: [
+                                              const Icon(
+                                                FontAwesomeIcons.solidMoon,
+                                                color: Colors.blueAccent,
+                                              ),
+                                              Text(
+                                                differenceDay.inDays.toString(),
+                                                style: MyTextStyle.textStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.blueAccent,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
                                             ],
                                           ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 12,
-                              ),
-                              Text(
-                                "Contact Details",
-                                style: MyTextStyle.textStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 10),
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        width: 0.5, color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      height: 35,
-                                      child: TextField(
-                                        controller: nameEditingController,
-                                        decoration: InputDecoration(
-                                            contentPadding: EdgeInsets.zero,
-                                            border: InputBorder.none,
-                                            prefixIcon: Icon(
-                                              FontAwesomeIcons.solidUser,
-                                              size: 12,
-                                              color: Colors.amber,
-                                            )),
-                                        style: MyTextStyle.textStyle(
-                                          fontSize: 14,
                                         ),
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 35,
-                                      child: TextField(
-                                        controller: emailEditingController,
-                                        decoration: InputDecoration(
-                                            contentPadding: EdgeInsets.zero,
-                                            border: InputBorder.none,
-                                            prefixIcon: Icon(
-                                              FontAwesomeIcons.solidEnvelope,
-                                              size: 12,
-                                              color: Colors.amber,
-                                            )),
-                                        style: MyTextStyle.textStyle(
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 35,
-                                      child: TextField(
-                                        controller: phoneEdittingController,
-                                        decoration: InputDecoration(
-                                            contentPadding: EdgeInsets.zero,
-                                            border: InputBorder.none,
-                                            prefixIcon: Icon(
-                                              FontAwesomeIcons.phone,
-                                              size: 12,
-                                              color: Colors.amber,
-                                            )),
-                                        style: MyTextStyle.textStyle(
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                "Requests",
-                                style: MyTextStyle.textStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.grey, width: 0.5),
-                                    borderRadius: BorderRadius.circular(10)),
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 10),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Checkbox(
-                                          checkColor: Colors.white,
-                                          activeColor: Colors.blueGrey,
-                                          value: this.valuefirst,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              this.valuefirst = value!;
-                                            });
-                                          },
-                                        ),
-                                        Text(
-                                          'High floor',
-                                          style: MyTextStyle.textStyle(
-                                              fontSize: 14.0),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              "Check out",
+                                              style: MyTextStyle.textStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.grey),
+                                            ),
+                                            Text(
+                                              "${end.day}/${end.month}/${end.year}",
+                                              style: MyTextStyle.textStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
-                                    Row(
-                                      children: [
-                                        Checkbox(
-                                          checkColor: Colors.white,
-                                          activeColor: Colors.blueGrey,
-                                          value: this.valuesecond,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              this.valuesecond = value!;
-                                            });
-                                          },
-                                        ),
-                                        Text(
-                                          'Smoking space',
-                                          style: MyTextStyle.textStyle(
-                                              fontSize: 14.0),
-                                        ),
-                                      ],
-                                    ),
-                                    Container(
-                                      height: 1,
-                                      color: Colors.grey,
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      "Special requests",
+                                  )
+                                ],
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 12,
+                            ),
+                            Text(
+                              "Contact Details",
+                              style: MyTextStyle.textStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      width: 0.5, color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 35,
+                                    child: TextField(
+                                      controller: nameEditingController,
+                                      decoration: const InputDecoration(
+                                          contentPadding: EdgeInsets.zero,
+                                          border: InputBorder.none,
+                                          prefixIcon: Icon(
+                                            FontAwesomeIcons.solidUser,
+                                            size: 12,
+                                            color: Colors.amber,
+                                          )),
                                       style: MyTextStyle.textStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.blueAccent),
-                                    ),
-                                    Container(
-                                      height: 35,
-                                      child: TextField(
-                                        controller: requestSpecial,
-                                        decoration: InputDecoration(
-                                            contentPadding: EdgeInsets.zero,
-                                            border: InputBorder.none,
-                                            hintText: "Yêu cầu đặc biệt",
-                                            hintStyle: MyTextStyle.textStyle(
-                                                fontSize: 14,
-                                                color: Colors.grey),
-                                            prefixIcon: Icon(
-                                              FontAwesomeIcons.tags,
-                                              size: 12,
-                                              color: Colors.amber,
-                                            )),
-                                        style: MyTextStyle.textStyle(
-                                          fontSize: 14,
-                                        ),
+                                        fontSize: 14,
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                  SizedBox(
+                                    height: 35,
+                                    child: TextField(
+                                      controller: emailEditingController,
+                                      decoration: const InputDecoration(
+                                          contentPadding: EdgeInsets.zero,
+                                          border: InputBorder.none,
+                                          prefixIcon: Icon(
+                                            FontAwesomeIcons.solidEnvelope,
+                                            size: 12,
+                                            color: Colors.amber,
+                                          )),
+                                      style: MyTextStyle.textStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 35,
+                                    child: TextField(
+                                      controller: phoneEdittingController,
+                                      decoration: const InputDecoration(
+                                          contentPadding: EdgeInsets.zero,
+                                          border: InputBorder.none,
+                                          prefixIcon: Icon(
+                                            FontAwesomeIcons.phone,
+                                            size: 12,
+                                            color: Colors.amber,
+                                          )),
+                                      style: MyTextStyle.textStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              SizedBox(
-                                height: 15,
-                              )
-                            ],
-                          ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              "Requests",
+                              style: MyTextStyle.textStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Colors.grey, width: 0.5),
+                                  borderRadius: BorderRadius.circular(10)),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Checkbox(
+                                        checkColor: Colors.white,
+                                        activeColor: Colors.blueGrey,
+                                        value: valuefirst,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            valuefirst = value!;
+                                          });
+                                        },
+                                      ),
+                                      Text(
+                                        'High floor',
+                                        style: MyTextStyle.textStyle(
+                                            fontSize: 14.0),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Checkbox(
+                                        checkColor: Colors.white,
+                                        activeColor: Colors.blueGrey,
+                                        value: valuesecond,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            valuesecond = value!;
+                                          });
+                                        },
+                                      ),
+                                      Text(
+                                        'Smoking space',
+                                        style: MyTextStyle.textStyle(
+                                            fontSize: 14.0),
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    color: Colors.grey,
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    "Special requests",
+                                    style: MyTextStyle.textStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.blueAccent),
+                                  ),
+                                  SizedBox(
+                                    height: 35,
+                                    child: TextField(
+                                      controller: requestSpecial,
+                                      decoration: InputDecoration(
+                                          contentPadding: EdgeInsets.zero,
+                                          border: InputBorder.none,
+                                          hintText: "Yêu cầu đặc biệt",
+                                          hintStyle: MyTextStyle.textStyle(
+                                              fontSize: 14, color: Colors.grey),
+                                          prefixIcon: const Icon(
+                                            FontAwesomeIcons.tags,
+                                            size: 12,
+                                            color: Colors.amber,
+                                          )),
+                                      style: MyTextStyle.textStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            )
+                          ],
                         ),
                         isActive: currentStep >= 0,
                         state: currentStep >= 0
@@ -764,7 +746,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                 style: MyTextStyle.textStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               Container(
@@ -775,20 +757,20 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                 child: Column(
                                   children: [
                                     Padding(
-                                      padding: EdgeInsets.symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                           horizontal: 10, vertical: 10),
                                       child: Row(
                                         children: [
                                           CachedNetworkImage(
-                                            imageUrl: AppUrl.hotelImage +
+                                            imageUrl:
                                                 widget.hotelModel.hotelImage,
                                             imageBuilder:
                                                 (context, imageProvider) =>
                                                     Container(
                                               width: context.mediaQueryWidth *
-                                                  0.25,
+                                                  0.26,
                                               height: context.mediaQueryHeight *
-                                                  0.12,
+                                                  0.10,
                                               decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(10),
@@ -799,15 +781,15 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                               ),
                                             ),
                                             placeholder: (context, url) =>
-                                                CircularProgressIndicator(),
+                                                const CircularProgressIndicator(),
                                             errorWidget:
                                                 (context, url, error) =>
-                                                    Icon(Icons.error),
+                                                    const Icon(Icons.error),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 10,
                                           ),
-                                          Container(
+                                          SizedBox(
                                             height:
                                                 context.mediaQueryHeight * 0.12,
                                             child: Column(
@@ -825,7 +807,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
-                                                Container(
+                                                SizedBox(
                                                   width:
                                                       context.mediaQueryWidth *
                                                           0.4,
@@ -851,11 +833,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                                         itemOptionOrderHotel(
                                                             FontAwesomeIcons
                                                                 .addressBook,
-                                                            widget.roomModel
-                                                                    .roomAmountOfPeople
-                                                                    .toString() +
-                                                                " guest"),
-                                                        SizedBox(
+                                                            "${widget.roomModel.roomAmountOfPeople} guest"),
+                                                        const SizedBox(
                                                           height: 5,
                                                         ),
                                                         itemOptionOrderHotel(
@@ -885,11 +864,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                                         itemOptionOrderHotel(
                                                             FontAwesomeIcons
                                                                 .layerGroup,
-                                                            widget.roomModel
-                                                                    .roomAcreage
-                                                                    .toString() +
-                                                                "m2"),
-                                                        SizedBox(
+                                                            "${widget.roomModel.roomAcreage}m2"),
+                                                        const SizedBox(
                                                           height: 5,
                                                         ),
                                                         itemOptionOrderHotel(
@@ -913,7 +889,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                       color: Colors.grey.shade400,
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                           horizontal: 10, vertical: 10),
                                       child: Row(
                                         mainAxisAlignment:
@@ -931,11 +907,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                                     color: Colors.grey),
                                               ),
                                               Text(
-                                                start.day.toString() +
-                                                    "/" +
-                                                    start.month.toString() +
-                                                    "/" +
-                                                    start.year.toString(),
+                                                "${start.day}/${start.month}/${start.year}",
                                                 style: MyTextStyle.textStyle(
                                                     fontSize: 15,
                                                     fontWeight: FontWeight.bold,
@@ -944,7 +916,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                             ],
                                           ),
                                           Container(
-                                            padding: EdgeInsets.symmetric(
+                                            padding: const EdgeInsets.symmetric(
                                                 horizontal: 10, vertical: 5),
                                             decoration: BoxDecoration(
                                                 borderRadius:
@@ -954,7 +926,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                                     width: 0.5)),
                                             child: Row(
                                               children: [
-                                                Icon(
+                                                const Icon(
                                                   FontAwesomeIcons.solidMoon,
                                                   color: Colors.blueAccent,
                                                 ),
@@ -982,11 +954,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                                     color: Colors.grey),
                                               ),
                                               Text(
-                                                end.day.toString() +
-                                                    "/" +
-                                                    end.month.toString() +
-                                                    "/" +
-                                                    end.year.toString(),
+                                                "${end.day}/${end.month}/${end.year}",
                                                 style: MyTextStyle.textStyle(
                                                     fontSize: 15,
                                                     fontWeight: FontWeight.bold,
@@ -1000,7 +968,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                   ],
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               Text(
@@ -1008,7 +976,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                 style: MyTextStyle.textStyle(
                                     fontSize: 14, fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               value.couponHide == false
@@ -1023,7 +991,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                         );
                                       },
                                       child: Container(
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                             horizontal: 10, vertical: 15),
                                         decoration: BoxDecoration(
                                             borderRadius:
@@ -1037,26 +1005,26 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                           children: [
                                             Row(
                                               children: [
-                                                Icon(
+                                                const Icon(
                                                   FontAwesomeIcons
                                                       .solidClipboard,
                                                   size: 15,
                                                   color: Colors.amber,
                                                 ),
-                                                SizedBox(
+                                                const SizedBox(
                                                   width: 10,
                                                 ),
                                                 Text(
                                                   "Thêm coupon đi nào!!!",
                                                   style: MyTextStyle.textStyle(
                                                       fontSize: 14,
-                                                      color: Colors.blueGrey,
+                                                      color: ColorData.myColor,
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
                                               ],
                                             ),
-                                            Icon(
+                                            const Icon(
                                               FontAwesomeIcons.plus,
                                               size: 18,
                                             )
@@ -1068,7 +1036,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                       children: [
                                         Container(
                                           width: context.mediaQueryWidth * 0.77,
-                                          padding: EdgeInsets.symmetric(
+                                          padding: const EdgeInsets.symmetric(
                                               horizontal: 15, vertical: 10),
                                           decoration: BoxDecoration(
                                               border: Border.all(
@@ -1081,12 +1049,12 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                             children: [
                                               Row(
                                                 children: [
-                                                  Icon(
+                                                  const Icon(
                                                     FontAwesomeIcons.ticket,
                                                     size: 16,
                                                     color: Colors.green,
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     width: 15,
                                                   ),
                                                   Column(
@@ -1104,7 +1072,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                                                     FontWeight
                                                                         .bold),
                                                       ),
-                                                      Container(
+                                                      SizedBox(
                                                         width: context
                                                                 .mediaQueryWidth *
                                                             0.4,
@@ -1126,11 +1094,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                                 ],
                                               ),
                                               Text(
-                                                "Giảm " +
-                                                    value.coupon.data!
-                                                        .couponPriceSale
-                                                        .toString() +
-                                                    "%",
+                                                "Giảm ${value.coupon.data!.couponPriceSale}%",
                                                 style: MyTextStyle.textStyle(
                                                     fontSize: 14,
                                                     color: Colors.redAccent,
@@ -1151,16 +1115,16 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                             );
                                           },
                                           child: Container(
-                                            padding: EdgeInsets.symmetric(
+                                            padding: const EdgeInsets.symmetric(
                                                 horizontal: 10, vertical: 15),
-                                            decoration: BoxDecoration(
+                                            decoration: const BoxDecoration(
                                                 color: Colors.redAccent,
                                                 borderRadius: BorderRadius.only(
                                                     topRight:
                                                         Radius.circular(10),
                                                     bottomRight:
                                                         Radius.circular(10))),
-                                            child: Icon(
+                                            child: const Icon(
                                               FontAwesomeIcons.plus,
                                               size: 18,
                                               color: Colors.white,
@@ -1169,18 +1133,18 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                         ),
                                       ],
                                     ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 15,
                               ),
                               Text("Check payment",
                                   style: MyTextStyle.textStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold)),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               Container(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                     horizontal: 20, vertical: 15),
                                 decoration: BoxDecoration(
                                     border: Border.all(
@@ -1190,18 +1154,16 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                 child: Column(
                                   children: [
                                     itemPriceOrder(
-                                        "1 phòng x " +
-                                            differenceDay.inDays.toString() +
-                                            " ngày",
+                                        "1 phòng x ${differenceDay.inDays} ngày",
                                         price),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 10,
                                     ),
                                     itemPriceOrder("Phí khách sạn", feeService),
-                                    LineComponent(),
+                                    const LineComponent(),
                                     itemPriceOrder(
                                         "Tổng giá phòng", price + feeService),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
                                     value.coupon.status == Status.completed
@@ -1217,14 +1179,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                                         MyTextStyle.textStyle(
                                                             fontSize: 12),
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     width: 5,
                                                   ),
                                                   Container(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 5,
-                                                              vertical: 2),
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 5,
+                                                          vertical: 2),
                                                       decoration: BoxDecoration(
                                                           border: Border.all(
                                                               color:
@@ -1241,10 +1203,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                                 ],
                                               ),
                                               Text(
-                                                "-" +
-                                                    AppFunctions.formatNumber(
-                                                        priceCouponSale) +
-                                                    "đ",
+                                                "-${AppFunctions.formatNumber(priceCouponSale)}đ",
                                                 style: MyTextStyle.textStyle(
                                                     fontSize: 12,
                                                     color: Colors.green),
@@ -1253,8 +1212,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                           )
                                         : Container(),
                                     Container(
-                                      margin:
-                                          EdgeInsets.symmetric(vertical: 15),
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 15),
                                       decoration: BoxDecoration(
                                           border: Border.all(
                                               width: 0.5,
@@ -1267,11 +1226,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                   ],
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 20,
                               ),
                               Container(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 10),
                                 decoration: BoxDecoration(
                                     color: Colors.white,
@@ -1287,19 +1246,19 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 10,
                                     ),
                                     RadioListTile(
                                         activeColor: Colors.green,
                                         title: Row(
                                           children: [
-                                            Icon(
+                                            const Icon(
                                               FontAwesomeIcons.moneyBillWave,
                                               color: Colors.green,
                                               size: 16,
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               width: 10,
                                             ),
                                             Text(
@@ -1322,16 +1281,16 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                         activeColor: Colors.green,
                                         title: Row(
                                           children: [
-                                            Icon(
+                                            const Icon(
                                               FontAwesomeIcons.creditCard,
                                               color: Colors.red,
                                               size: 16,
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               width: 10,
                                             ),
                                             Text(
-                                              "Thanh toán qua Momo",
+                                              "Thanh toán qua Stripe",
                                               style: MyTextStyle.textStyle(
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.bold,
@@ -1349,7 +1308,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                   ],
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                             ],
@@ -1372,28 +1331,25 @@ class _CheckoutPageState extends State<CheckoutPage> {
     IconData iconData,
     String text,
   ) {
-    return Container(
-      // width: context.mediaQueryWidth * 0.24,
-      child: Row(
-        children: [
-          Icon(
-            iconData,
-            size: 12,
-            color: Colors.amber,
+    return Row(
+      children: [
+        Icon(
+          iconData,
+          size: 12,
+          color: Colors.amber,
+        ),
+        const SizedBox(
+          width: 5,
+        ),
+        SizedBox(
+          width: context.mediaQueryWidth * 0.2,
+          child: Text(
+            text,
+            overflow: TextOverflow.ellipsis,
+            style: MyTextStyle.textStyle(fontSize: 12, color: Colors.grey),
           ),
-          SizedBox(
-            width: 5,
-          ),
-          Container(
-            width: context.mediaQueryWidth * 0.2,
-            child: Text(
-              text,
-              overflow: TextOverflow.ellipsis,
-              style: MyTextStyle.textStyle(fontSize: 12, color: Colors.grey),
-            ),
-          )
-        ],
-      ),
+        )
+      ],
     );
   }
 
@@ -1428,7 +1384,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           style: MyTextStyle.textStyle(fontSize: 12, fontWeight: fontWeight),
         ),
         Text(
-          AppFunctions.formatNumber(price) + "đ",
+          "${AppFunctions.formatNumber(price)}đ",
           style: MyTextStyle.textStyle(fontSize: 12, fontWeight: fontWeight),
         )
       ],
@@ -1473,7 +1429,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
         builder: (context, child) {
           return Theme(
             data: Theme.of(context).copyWith(
-                colorScheme: ColorScheme.light(
+                colorScheme: const ColorScheme.light(
               primary: Colors.blueGrey, // header background color
               onPrimary: Colors.black, // header text color
               onSurface: Colors.blueGrey, // body text color
@@ -1486,7 +1442,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       const BoxConstraints(maxWidth: 300, maxHeight: 600),
                   child: child,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 12,
                 )
               ],

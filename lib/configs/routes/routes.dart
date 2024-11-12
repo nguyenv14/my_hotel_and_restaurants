@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:my_hotel_and_restaurants/configs/routes/routes_name.dart';
+import 'package:my_hotel_and_restaurants/model/customer_menu_item.dart';
+import 'package:my_hotel_and_restaurants/model/customer_model.dart';
 import 'package:my_hotel_and_restaurants/model/hotel_model.dart';
+import 'package:my_hotel_and_restaurants/model/menu_restaurant_model.dart';
 import 'package:my_hotel_and_restaurants/model/order_model.dart';
+import 'package:my_hotel_and_restaurants/model/restaurant_model.dart';
 import 'package:my_hotel_and_restaurants/model/room_model.dart';
 import 'package:my_hotel_and_restaurants/model/type_room_model.dart';
 import 'package:my_hotel_and_restaurants/view/checkout_hotel/checkout_page.dart';
+import 'package:my_hotel_and_restaurants/view/checkout_hotel/order_restaurant/checkout_page.dart';
+import 'package:my_hotel_and_restaurants/view/checkout_hotel/order_restaurant/order_page.dart';
+import 'package:my_hotel_and_restaurants/view/checkout_hotel/order_restaurant/receipt_page.dart';
 import 'package:my_hotel_and_restaurants/view/checkout_hotel/receipt_page.dart';
 import 'package:my_hotel_and_restaurants/view/checkout_hotel/select_room_hotel.dart';
+import 'package:my_hotel_and_restaurants/view/favourite/favourite_page.dart';
 import 'package:my_hotel_and_restaurants/view/home/simple_map.dart';
 import 'package:my_hotel_and_restaurants/view/login/login_screen.dart';
 import 'package:my_hotel_and_restaurants/view/login/register/register_screen.dart';
 import 'package:my_hotel_and_restaurants/view/main_screen.dart';
+import 'package:my_hotel_and_restaurants/view/my_order_restaurant/order_restaurant_detail.dart';
 import 'package:my_hotel_and_restaurants/view/myorder/order_detail.dart';
 import 'package:my_hotel_and_restaurants/view/product/detail_product.dart';
 import 'package:my_hotel_and_restaurants/view/profile/profile_page.dart';
@@ -49,6 +58,11 @@ class Routes {
         OrderModel orderModel = (settings.arguments as OrderModel);
         return MaterialPageRoute(
             builder: (context) => OrderDetailPage(orderModel: orderModel));
+      case RoutesName.orderRestaurantDetail:
+        OrderModel orderModel = (settings.arguments as OrderModel);
+        return MaterialPageRoute(
+            builder: (context) =>
+                OrderRestaurantDetail(orderModel: orderModel));
       case RoutesName.receiptPage:
         Map<String, dynamic> args = settings.arguments as Map<String, dynamic>;
         OrderModel orderModel = args['orderModel'] as OrderModel;
@@ -86,6 +100,10 @@ class Routes {
         return MaterialPageRoute(
           builder: (context) => const SearchScreen(),
         );
+      case RoutesName.favouritePage:
+        return MaterialPageRoute(
+          builder: (context) => const FavouritePage(),
+        );
       case RoutesName.test:
         return MaterialPageRoute(
           builder: (context) => const SimpleMap(),
@@ -101,6 +119,40 @@ class Routes {
                   ),
                 ),
               );
+      case RoutesName.orderRestaurant:
+        Map<String, dynamic> args = settings.arguments as Map<String, dynamic>;
+        RestaurantModel restaurantModel = args['restaurant'] as RestaurantModel;
+        List<MenuModel> menuModel = args['menus'] as List<MenuModel>;
+        DateTime date = args['date'] as DateTime;
+        int quantity = args['person'] as int;
+        return MaterialPageRoute(
+          builder: (context) => OrderRestaurantPage(
+            restaurantModel: restaurantModel,
+            menuList: menuModel,
+            date: date,
+            person: quantity,
+          ),
+        );
+      case RoutesName.receiptRestaurantPage:
+        return MaterialPageRoute(
+          builder: (context) => const ReceiptRestaurantPage(),
+        );
+      case RoutesName.paymentRestaurant:
+        Map<String, dynamic> args = settings.arguments as Map<String, dynamic>;
+        RestaurantModel restaurantModel = args['restaurant'] as RestaurantModel;
+        List<CustomerOrderItem> menuModel =
+            args['menus'] as List<CustomerOrderItem>;
+        DateTime date = args['date'] as DateTime;
+        int quantity = args['person'] as int;
+        CustomerModel customerModel = args['customer'] as CustomerModel;
+        return MaterialPageRoute(
+          builder: (context) => CheckInRestaurantPage(
+              customerModel: customerModel,
+              date: date,
+              menuList: menuModel,
+              personQuantity: quantity,
+              restaurantModel: restaurantModel),
+        );
       default:
         return MaterialPageRoute(builder: (_) {
           return const Scaffold(

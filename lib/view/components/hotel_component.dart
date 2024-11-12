@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_hotel_and_restaurants/configs/color.dart';
 import 'package:my_hotel_and_restaurants/configs/text_style.dart';
 import 'package:my_hotel_and_restaurants/model/hotel_model.dart';
+import 'package:my_hotel_and_restaurants/utils/app_functions.dart';
 import 'package:my_hotel_and_restaurants/view/components/booking_button.dart';
 
 class HotelComponent extends StatefulWidget {
@@ -10,10 +11,10 @@ class HotelComponent extends StatefulWidget {
   final VoidCallback onPressed; // Add onPressed parameter
 
   const HotelComponent({
-    Key? key,
+    super.key,
     required this.onPressed,
     required this.hotelModel,
-  }) : super(key: key);
+  });
 
   @override
   State<HotelComponent> createState() => _HotelComponentState();
@@ -37,8 +38,7 @@ class _HotelComponentState extends State<HotelComponent> {
           ],
         ),
         child: Row(
-          crossAxisAlignment:
-              CrossAxisAlignment.center, // Align items to the top
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
               padding: const EdgeInsets.only(
@@ -80,7 +80,7 @@ class _HotelComponentState extends State<HotelComponent> {
                         children: [
                           TextSpan(
                             text:
-                                "${widget.hotelModel.rooms.first.roomTypes.first.typeRoomPrice} đ",
+                                "${AppFunctions.formatNumber(widget.hotelModel.rooms.first.roomTypes.first.typeRoomPrice)}đ",
                             style: MyTextStyle.textStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w500,
@@ -101,7 +101,6 @@ class _HotelComponentState extends State<HotelComponent> {
                 ),
               ),
             ),
-            // Button aligned to the right
             Padding(
               padding: const EdgeInsets.only(top: 65, right: 10),
               child: BookingButton(

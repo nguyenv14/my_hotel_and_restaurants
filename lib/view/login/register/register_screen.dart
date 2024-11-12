@@ -1,7 +1,5 @@
 import 'package:cherry_toast/cherry_toast.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
@@ -20,10 +18,10 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  TextEditingController nameEdit = new TextEditingController();
-  TextEditingController phoneEdit = new TextEditingController();
-  TextEditingController emailEdit = new TextEditingController();
-  TextEditingController passEdit = new TextEditingController();
+  TextEditingController nameEdit = TextEditingController();
+  TextEditingController phoneEdit = TextEditingController();
+  TextEditingController emailEdit = TextEditingController();
+  TextEditingController passEdit = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,11 +33,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 50,
                 ),
                 Center(
-                  child: Container(
+                  child: SizedBox(
                       width: context.mediaQueryWidth * 0.5,
                       child: Lottie.asset("assets/raw/register.json")),
                 ),
@@ -48,11 +46,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   style: MyTextStyle.textStyle(
                       fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Column(
                     children: [
                       InputFieldComponent(
@@ -62,7 +61,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         textEditingController: nameEdit,
                         color: Colors.pinkAccent[100]!,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       InputFieldComponent(
@@ -72,7 +71,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         textEditingController: emailEdit,
                         color: Colors.pinkAccent[100]!,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       InputFieldComponent(
@@ -82,7 +81,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         textEditingController: phoneEdit,
                         color: Colors.pinkAccent[100]!,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       InputFieldComponent(
@@ -93,7 +92,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         textEditingController: passEdit,
                         color: Colors.pinkAccent[100]!,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                     ],
@@ -148,7 +147,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           )),
                         ),
                       ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 GestureDetector(

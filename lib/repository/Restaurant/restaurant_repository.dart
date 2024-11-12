@@ -5,7 +5,7 @@ abstract class RestaurantRepository {
 
   Future<ObjectDTO> fetchRestaurantById(int index);
 
-  // Future<ObjectDTO> fetchHotelFavouriteId(Map<Object?, Object> data);
+  Future<ObjectDTO> fetchRestaurantFavouriteId(Map<Object?, Object> data);
 
   // Future<ObjectDTO> searchHotel(Map<Object?, Object> data);
 

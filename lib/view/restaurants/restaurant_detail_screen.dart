@@ -1,9 +1,12 @@
 import 'package:board_datetime_picker/board_datetime_picker.dart';
+import 'package:cherry_toast/cherry_toast.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:my_hotel_and_restaurants/configs/color.dart';
 import 'package:my_hotel_and_restaurants/configs/extensions.dart';
+import 'package:my_hotel_and_restaurants/configs/routes/routes_name.dart';
 import 'package:my_hotel_and_restaurants/configs/text_style.dart';
 import 'package:my_hotel_and_restaurants/data/response/status.dart';
 import 'package:my_hotel_and_restaurants/main.dart';
@@ -11,11 +14,12 @@ import 'package:my_hotel_and_restaurants/model/date_model.dart';
 import 'package:my_hotel_and_restaurants/model/menu_restaurant_model.dart';
 import 'package:my_hotel_and_restaurants/utils/app_functions.dart';
 import 'package:my_hotel_and_restaurants/view/components/button_leading_component.dart';
-import 'package:my_hotel_and_restaurants/view/components/list_image_component.dart';
+import 'package:my_hotel_and_restaurants/view/components/list_image_restaurant_component.dart';
 import 'package:my_hotel_and_restaurants/view/components/restaurant_info_component.dart';
 import 'package:my_hotel_and_restaurants/view/product/mapScreen.dart';
 import 'package:my_hotel_and_restaurants/view_model/restaurant_view_model.dart';
 import 'package:provider/provider.dart';
+import 'package:time_picker_spinner_pop_up/time_picker_spinner_pop_up.dart';
 
 class RestaurantDetailScreen extends StatefulWidget {
   final restaurantId;
@@ -27,11 +31,10 @@ class RestaurantDetailScreen extends StatefulWidget {
 
 class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
   var textController = BoardDateTimeTextController();
-  int countQuantity = 0;
+  int countQuantity = 1;
   var quantityController = TextEditingController();
   @override
   void initState() {
-    // TODO: implement initState
     quantityController.text = countQuantity.toString();
     textController.setText(MyDate.getNow().toString());
     super.initState();
@@ -99,7 +102,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                           restaurantModel:
                               restaurantViewModel.restaurantDetail.data!,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Padding(
@@ -112,7 +115,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                                     restaurantViewModel.restaurantDetail.data!,
                                 isRestaurant: true,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               Column(
@@ -128,7 +131,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                                   const SizedBox(height: 5),
                                   Container(
                                     width: context.mediaQueryWidth,
-                                    padding: EdgeInsets.all(14),
+                                    padding: const EdgeInsets.all(14),
                                     decoration: BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.circular(10),
@@ -137,7 +140,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                                     child: Column(
                                       children: [
                                         MapScreen(listLatLong),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 10,
                                         ),
                                         Row(
@@ -169,7 +172,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                                       ],
                                     ),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 15,
                                   ),
                                   Row(
@@ -216,7 +219,9 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                   extendBody: true,
                   bottomNavigationBar: GestureDetector(
                     onTap: () {
-                      int quantity = 0;
+                      DateTime day1 = DateTime.now();
+                      DateTime day2 = DateTime.now();
+                      int quantity = 1;
                       showModalBottomSheet(
                         context: context,
                         elevation: 10,
@@ -224,7 +229,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                           return StatefulBuilder(
                               builder: (context, setModalState) {
                             return Container(
-                              height: context.mediaQueryHeight * 0.4,
+                              height: context.mediaQueryHeight * 0.3,
                               width: MediaQuery.of(context).size.width,
                               decoration: BoxDecoration(
                                 color: ColorData.backgroundColor,
@@ -266,7 +271,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                                           ),
                                         ),
                                         Text(
-                                          "👨‍👨‍👦‍👦 Quantity",
+                                          "👨‍👨‍👦‍👦 Time",
                                           style: MyTextStyle.textStyle(
                                             fontSize: 16,
                                             color: Colors.black,
@@ -284,125 +289,186 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                                           width: MediaQuery.of(context)
                                                   .size
                                                   .width *
-                                              0.4,
-                                          child: BoardDateTimeInputField(
-                                            initialDate: MyDate.getNow(),
-                                            controller: textController,
-                                            pickerType:
-                                                DateTimePickerType.datetime,
-                                            options: const BoardDateTimeOptions(
-                                              languages:
-                                                  BoardPickerLanguages.en(),
-                                            ),
-                                            textStyle: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium,
-                                            onChanged: (date) {},
-                                            onFocusChange: (val, date, text) {},
+                                              0.3,
+                                          child: TimePickerSpinnerPopUp(
+                                            mode: CupertinoDatePickerMode.date,
+                                            initTime: DateTime.now(),
+                                            maxTime: DateTime.now()
+                                                .add(const Duration(days: 3)),
+                                            onChange: (date) {
+                                              setState(() {
+                                                day1 = date;
+                                              });
+                                            },
                                           ),
                                         ),
+                                        TimePickerSpinnerPopUp(
+                                          mode: CupertinoDatePickerMode.time,
+                                          minuteInterval: 15,
+                                          minTime: AppFunctions.minTime(),
+                                          maxTime: AppFunctions.maxTime(),
+                                          initTime:
+                                              AppFunctions.roundToNearest15(
+                                                  DateTime.now()),
+                                          onChange: (time) {
+                                            setState(() {
+                                              day2 = time;
+                                            });
+                                          },
+                                        )
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Text(
+                                              "👨‍👨‍👦 Quantity",
+                                              style: MyTextStyle.textStyle(
+                                                fontSize: 16,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            SizedBox(
+                                              width:
+                                                  context.mediaQueryWidth * 0.4,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      setModalState(() {
+                                                        if (quantity > 1)
+                                                          quantity--;
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 20,
+                                                          vertical: 6),
+                                                      decoration: BoxDecoration(
+                                                        color:
+                                                            ColorData.myColor,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                      ),
+                                                      child: const Text(
+                                                        "-",
+                                                        style: TextStyle(
+                                                          fontSize: 15,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    quantity.toString(),
+                                                    style:
+                                                        MyTextStyle.textStyle(
+                                                            fontSize: 15),
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      setModalState(() {
+                                                        quantity++;
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 20,
+                                                          vertical: 6),
+                                                      decoration: BoxDecoration(
+                                                        color:
+                                                            ColorData.myColor,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                      ),
+                                                      child: const Text(
+                                                        "+",
+                                                        style: TextStyle(
+                                                          fontSize: 15,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                         SizedBox(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.5,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              GestureDetector(
-                                                onTap: () {
-                                                  setModalState(() {
-                                                    if (quantity > 0)
-                                                      quantity--;
-                                                  });
-                                                },
-                                                child: Container(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 20,
-                                                      vertical: 6),
-                                                  decoration: BoxDecoration(
+                                          width: context.mediaQueryWidth * 0.5,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              if (validateTimeOrder(
+                                                  AppFunctions
+                                                      .getDayOrderRestaurant(
+                                                          day1, day2),
+                                                  countQuantity)) {
+                                                Map<String, dynamic> list = {
+                                                  "restaurant":
+                                                      restaurantViewModel
+                                                          .restaurantDetail
+                                                          .data,
+                                                  "menus": restaurantViewModel
+                                                      .restaurantDetail
+                                                      .data!
+                                                      .menuList,
+                                                  "date": AppFunctions
+                                                      .getDayOrderRestaurant(
+                                                          day1, day2),
+                                                  "person": quantity
+                                                };
+                                                Navigator.pushNamed(context,
+                                                    RoutesName.orderRestaurant,
+                                                    arguments: list);
+                                              }
+                                            },
+                                            child: Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 15,
+                                                        vertical: 10),
+                                                margin:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 10,
+                                                        vertical: 10),
+                                                decoration: BoxDecoration(
                                                     color: ColorData.myColor,
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            10),
-                                                  ),
-                                                  child: const Text(
-                                                    "-",
-                                                    style: TextStyle(
-                                                      fontSize: 15,
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              Text(
-                                                quantity.toString(),
-                                                style: MyTextStyle.textStyle(
-                                                    fontSize: 15),
-                                              ),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  setModalState(() {
-                                                    quantity++;
-                                                  });
-                                                },
-                                                child: Container(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 20,
-                                                      vertical: 6),
-                                                  decoration: BoxDecoration(
-                                                    color: ColorData.myColor,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                  ),
-                                                  child: const Text(
-                                                    "+",
-                                                    style: TextStyle(
-                                                      fontSize: 15,
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
+                                                            40)),
+                                                height: 50,
+                                                child: Center(
+                                                    child: Text(
+                                                  "Countinue",
+                                                  style: MyTextStyle.textStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white),
+                                                ))),
                                           ),
                                         ),
                                       ],
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        print(quantity);
-                                        print(textController.selectedDate);
-                                        print(restaurantViewModel
-                                            .restaurantDetail
-                                            .data!
-                                            .restaurantId);
-                                      },
-                                      child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 15, vertical: 10),
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 10, vertical: 10),
-                                          decoration: BoxDecoration(
-                                              color: ColorData.myColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(40)),
-                                          height: 50,
-                                          child: Center(
-                                              child: Text(
-                                            "Countinue",
-                                            style: MyTextStyle.textStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white),
-                                          ))),
                                     ),
                                   ],
                                 ),
@@ -413,10 +479,10 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                       );
                     },
                     child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 10),
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
                         decoration: BoxDecoration(
                             color: ColorData.myColor,
                             borderRadius: BorderRadius.circular(40)),
@@ -442,11 +508,37 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
       ),
     );
   }
+
+  bool validateTimeOrder(DateTime date, int countQuantity) {
+    if (date.isBefore(DateTime.now().add(const Duration(hours: 5)))) {
+      CherryToast.error(title: const Text("Vui lòng đặt trước 5 tiếng!"))
+          .show(context);
+      return false;
+    }
+    if (date.isAfter(DateTime.now().add(const Duration(days: 3)))) {
+      CherryToast.error(title: const Text("Vui lòng đặt không quá 3 ngày!"))
+          .show(context);
+      return false;
+    }
+    if (date.hour < 8 || date.hour > 20) {
+      CherryToast.error(
+              title: const Text("Vui lòng đặt trong khung giờ quy định!"))
+          .show(context);
+      return false;
+    }
+    if (countQuantity <= 0) {
+      CherryToast.error(
+              title: const Text("Vui lòng chỉ định số lượng người > 0!"))
+          .show(context);
+      return false;
+    }
+    return true;
+  }
 }
 
 Widget WidgetMenuRestaurant(MenuModel menuModel) {
   return Container(
-    margin: EdgeInsets.symmetric(vertical: 10),
+    margin: const EdgeInsets.symmetric(vertical: 10),
     padding: const EdgeInsets.all(10),
     decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),

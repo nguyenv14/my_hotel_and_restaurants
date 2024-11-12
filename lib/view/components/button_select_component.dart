@@ -8,12 +8,12 @@ class ButtonSelectComponent extends StatelessWidget {
   final Function(int) onTap;
 
   const ButtonSelectComponent({
-    Key? key,
+    super.key,
     required this.index,
     required this.hotelString,
     required this.selectedIndex,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +25,14 @@ class ButtonSelectComponent extends StatelessWidget {
         decoration: BoxDecoration(
           color: index == selectedIndex ? ColorData.myColor : Colors.white,
           borderRadius: BorderRadius.circular(50),
-          border: Border.all(
-            color: (index == selectedIndex)
-                ? const Color.fromARGB(255, 154, 155, 156).withOpacity(0.4)
-                : const Color.fromRGBO(232, 234, 241, 1),
-            width: 0.8,
-          ),
+          boxShadow: [
+            BoxShadow(
+              offset: const Offset(1, 1),
+              blurRadius: 3,
+              spreadRadius: 1,
+              color: Colors.grey.withOpacity(0.5),
+            ),
+          ],
         ),
         child: Center(
           child: Text(

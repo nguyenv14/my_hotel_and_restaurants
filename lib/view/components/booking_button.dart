@@ -9,14 +9,14 @@ class BookingButton extends StatelessWidget {
   final bool isIcon;
 
   const BookingButton({
-    Key? key,
+    super.key,
     required this.text,
     required this.onPressed,
     this.color = Colors.blue, // default color
     this.textColor = Colors.white, // default text color
     this.icon,
     this.isIcon = false, // default no icon
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -40,7 +40,7 @@ class HotelViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future fetchHotelListRecomendation({int type = 0}) async {
+  Future fetchHotelListRecomendation() async {
     setHotelListRecomendationResponse(ApiResponse.loading());
     hotelRepository.fetchHotelRecomendation().then((value) {
       List<dynamic> dt = value.data;
@@ -101,14 +101,14 @@ class HotelViewModel extends ChangeNotifier {
     });
   }
 
-  Future searchHotel(int location_index, int brand_id, int type_index,
-      String hotel_name) async {
+  Future searchHotel(
+      int locationIndex, int brandId, int typeIndex, String hotelName) async {
     setHotelListSearchResponse(ApiResponse.loading());
     var body = {
-      "type_hotel": type_index.toString(),
-      "location_id": location_index.toString(),
-      "hotel_name": hotel_name,
-      "brand_id": brand_id.toString(),
+      "type_hotel": typeIndex.toString(),
+      "location_id": locationIndex.toString(),
+      "hotel_name": hotelName,
+      "brand_id": brandId.toString(),
     };
 
     hotelRepository.searchHotel(body).then((value) {

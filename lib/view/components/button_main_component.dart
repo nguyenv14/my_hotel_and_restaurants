@@ -8,12 +8,12 @@ class ButtonMainComponent extends StatelessWidget {
   final VoidCallback onPressed;
 
   const ButtonMainComponent({
-    Key? key,
+    super.key,
     required this.buttonText,
     required this.buttonColor,
     required this.textColor,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class ButtonMainComponent extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 12),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
-            side: BorderSide(
+            side: const BorderSide(
               color: ColorData.myColor,
             ),
           ),

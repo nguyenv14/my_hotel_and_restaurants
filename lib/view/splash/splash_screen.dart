@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:my_hotel_and_restaurants/configs/color.dart';
 import 'package:my_hotel_and_restaurants/configs/extensions.dart';
 import 'package:my_hotel_and_restaurants/view/splash/splash_service.dart';
 
@@ -15,7 +16,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _splashService.checkAuth(context);
   }
@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
-        color: Colors.blueGrey,
+        color: ColorData.myColor,
         child: Center(
           child: Lottie.asset(
             "assets/raw/hotel.json",

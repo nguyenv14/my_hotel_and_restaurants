@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:my_hotel_and_restaurants/configs/color.dart';
-import 'package:my_hotel_and_restaurants/configs/extensions.dart';
 import 'package:my_hotel_and_restaurants/configs/text_style.dart';
 
 class InputFieldComponent extends StatefulWidget {
@@ -9,19 +8,19 @@ class InputFieldComponent extends StatefulWidget {
   final String titleText;
   final TextEditingController textEditingController;
   final Color color;
-  // final Widget widgetPass;
   final bool isPassword;
+  final int? maxLines;
 
-  const InputFieldComponent(
-      {super.key,
-      required this.iconData,
-      required this.hintText,
-      required this.textEditingController,
-      required this.color,
-      this.isPassword = false,
-      required this.titleText});
-//
-  // TextEditingController get controller => textEditingController;
+  const InputFieldComponent({
+    super.key,
+    required this.iconData,
+    required this.hintText,
+    required this.textEditingController,
+    required this.color,
+    this.isPassword = false,
+    required this.titleText,
+    this.maxLines = 1,
+  });
 
   @override
   State<InputFieldComponent> createState() => _InputFieldComponentState();
@@ -29,86 +28,83 @@ class InputFieldComponent extends StatefulWidget {
 
 class _InputFieldComponentState extends State<InputFieldComponent> {
   final FocusNode _focusNode = FocusNode();
-  bool password = false;
+  bool _isObscured = true;
+
   @override
   void initState() {
     super.initState();
-    _focusNode.addListener(_onFocusChange);
-  }
-
-  void _onFocusChange() {
-    setState(() {});
+    _focusNode.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      // margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       decoration: BoxDecoration(
-          color: ColorData.backGroundColorTextField,
-          borderRadius: BorderRadius.circular(20)),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            offset: const Offset(1, 1),
+            blurRadius: 5,
+            spreadRadius: 1,
+            color: Colors.grey.withOpacity(0.3),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(
-            widget.iconData,
-            size: 20,
-            color: ColorData.myColor,
+          Text(
+            widget.titleText,
+            style: MyTextStyle.textStyle(
+                fontSize: 14,
+                color: ColorData.greyTextColor,
+                fontWeight: FontWeight.bold),
           ),
-          SizedBox(
-            width: 15,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                widget.titleText,
-                style: MyTextStyle.textStyle(fontSize: 14, color: Colors.grey),
+              widget.maxLines == 1
+                  ? Row(
+                      children: [
+                        Icon(widget.iconData, size: 20, color: widget.color),
+                        const SizedBox(width: 15),
+                      ],
+                    )
+                  : Container(),
+              Expanded(
+                child: TextField(
+                  controller: widget.textEditingController,
+                  focusNode: _focusNode,
+                  maxLines: widget.maxLines,
+                  obscureText: widget.isPassword && _isObscured,
+                  style: MyTextStyle.textStyle(
+                      fontSize: 16, color: ColorData.myColor),
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: widget.hintText,
+                    hintStyle:
+                        MyTextStyle.textStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                ),
               ),
-              Container(
-                width: context.mediaQueryWidth * 0.6,
-                height: 30,
-                child: widget.isPassword == false
-                    ? TextField(
-                        controller: widget.textEditingController,
-                        style: MyTextStyle.textStyle(
-                            fontSize: 16, color: ColorData.myColor),
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: widget.hintText,
-                            hintStyle: MyTextStyle.textStyle(
-                                fontSize: 12, color: ColorData.myColor)),
-                      )
-                    : TextField(
-                        controller: widget.textEditingController,
-                        obscureText: password,
-                        style: MyTextStyle.textStyle(
-                            fontSize: 16, color: ColorData.myColor),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: widget.hintText,
-                          hintStyle: MyTextStyle.textStyle(
-                              fontSize: 12, color: ColorData.myColor),
-                        ),
-                      ),
-              )
-            ],
-          ),
-          widget.isPassword == true
-              ? GestureDetector(
+              if (widget.isPassword)
+                GestureDetector(
                   onTap: () {
-                    setState(
-                      () {
-                        password = !password;
-                      },
-                    );
+                    setState(() {
+                      _isObscured = !_isObscured;
+                    });
                   },
                   child: Icon(
-                      password ? Icons.visibility : Icons.visibility_off,
-                      color: ColorData.myColor),
-                )
-              : Container(),
+                    _isObscured ? Icons.visibility_off : Icons.visibility,
+                    color: widget.color,
+                  ),
+                ),
+            ],
+          ),
         ],
       ),
     );

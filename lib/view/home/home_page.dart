@@ -1,7 +1,5 @@
 import 'package:cherry_toast/cherry_toast.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -15,20 +13,14 @@ import 'package:my_hotel_and_restaurants/main.dart';
 import 'package:my_hotel_and_restaurants/model/banner_model.dart';
 import 'package:my_hotel_and_restaurants/model/hotel_model.dart';
 import 'package:my_hotel_and_restaurants/model/restaurant_model.dart';
-import 'package:my_hotel_and_restaurants/repository/Hotel/hotel_repository.dart';
-import 'package:my_hotel_and_restaurants/repository/stripe_service.dart';
 import 'package:my_hotel_and_restaurants/utils/app_functions.dart';
-import 'package:my_hotel_and_restaurants/utils/favorite_db.dart';
 import 'package:my_hotel_and_restaurants/utils/user_db.dart';
+import 'package:my_hotel_and_restaurants/view/checkout_hotel/order_restaurant/receipt_page.dart';
 import 'package:my_hotel_and_restaurants/view/components/button_select_component.dart';
 import 'package:my_hotel_and_restaurants/view/components/card_hotel_component.dart';
-import 'package:my_hotel_and_restaurants/view/components/card_order_hotel_component.dart';
 import 'package:my_hotel_and_restaurants/view/components/card_restaurant_component.dart';
 import 'package:my_hotel_and_restaurants/view/components/hotel_component.dart';
-import 'package:my_hotel_and_restaurants/view/components/menu_component.dart';
 import 'package:my_hotel_and_restaurants/view_model/area_view_model.dart';
-import 'package:my_hotel_and_restaurants/view_model/banner_view_model.dart';
-import 'package:my_hotel_and_restaurants/view_model/customer_view_model.dart';
 import 'package:my_hotel_and_restaurants/view_model/favourite_view_model.dart';
 import 'package:my_hotel_and_restaurants/view_model/hotel_view_model.dart';
 import 'package:my_hotel_and_restaurants/view_model/restaurant_view_model.dart';
@@ -149,7 +141,7 @@ class _HomePageState extends State<HomePage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 50), // For status bar
+                        const SizedBox(height: 50), // For status bar
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -180,14 +172,17 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ],
                             ),
-                            Card(
-                              elevation: 10,
-                              shape: const CircleBorder(),
-                              child: IconButton(
-                                icon: const Icon(Icons.notifications_none),
-                                color: ColorData.myColor,
-                                iconSize: 30,
-                                onPressed: () {},
+                            GestureDetector(
+                              onTap: () {},
+                              child: Card(
+                                elevation: 10,
+                                shape: const CircleBorder(),
+                                child: IconButton(
+                                  icon: const Icon(Icons.notifications_none),
+                                  color: ColorData.myColor,
+                                  iconSize: 30,
+                                  onPressed: () {},
+                                ),
                               ),
                             ),
                           ],
@@ -195,32 +190,37 @@ class _HomePageState extends State<HomePage> {
 
                         const SizedBox(height: 20),
 
-                        Container(
-                          padding: const EdgeInsets.only(left: 5),
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Row(
-                            children: [
-                              IconButton(
-                                icon: Icon(Icons.search),
-                                color: Colors.grey,
-                                iconSize: 30,
-                                onPressed: () {},
-                              ),
-                              const Text(
-                                "Search your hotel...",
-                                style: TextStyle(
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, RoutesName.searchPage);
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 5),
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.search),
                                   color: Colors.grey,
-                                  fontWeight: FontWeight.w600,
+                                  iconSize: 30,
+                                  onPressed: () {},
                                 ),
-                              ),
-                            ],
+                                const Text(
+                                  "Search your hotel...",
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         // Popular Hotel Title
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -235,7 +235,12 @@ class _HomePageState extends State<HomePage> {
                             ),
                             TextButton(
                               onPressed: () {
-                                print("see all");
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ReceiptRestaurantPage(),
+                                    ));
                               },
                               child: const Text(
                                 'See All',
@@ -288,9 +293,7 @@ class _HomePageState extends State<HomePage> {
                                       hotelModel: value
                                           .hotelListRecomendationResponse
                                           .data![index],
-                                      onPressed: () {
-                                        print('booking $index');
-                                      },
+                                      onPressed: () {},
                                       favouriteViewModel: favouriteViewModel,
                                     );
                                   },
@@ -371,6 +374,7 @@ class _HomePageState extends State<HomePage> {
                             return RestaurantCard(
                               restaurantModel:
                                   value.restaurantListByArea.data![index],
+                              favouriteViewModel: favouriteViewModel,
                               onFavoritePressed: () {
                                 print('fav $index');
                               },
@@ -401,21 +405,24 @@ class _HomePageState extends State<HomePage> {
                 scrollDirection: Axis.horizontal,
                 itemCount: listHotelType.length,
                 itemBuilder: (context, index) {
-                  return ButtonSelectComponent(
-                    index: index,
-                    hotelString: listHotelType[index],
-                    selectedIndex: indexHotelType,
-                    onTap: (p0) {
-                      setState(() {
-                        indexHotelType = index;
-                      });
-                      hotelViewModelByType.fetchHotelListByType(type: index);
-                    },
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 3),
+                    child: ButtonSelectComponent(
+                      index: index,
+                      hotelString: listHotelType[index],
+                      selectedIndex: indexHotelType,
+                      onTap: (p0) {
+                        setState(() {
+                          indexHotelType = index;
+                        });
+                        hotelViewModelByType.fetchHotelListByType(type: index);
+                      },
+                    ),
                   );
                 },
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
             ChangeNotifierProvider<HotelViewModel>(
@@ -426,7 +433,7 @@ class _HomePageState extends State<HomePage> {
                   hotelViewModelByType = value;
                   switch (value.hotelListByTypeResponse.status) {
                     case Status.loading:
-                      return Container(
+                      return SizedBox(
                         height: context.mediaQueryHeight * 0.3,
                         child: const Center(
                           child: CircularProgressIndicator(
@@ -459,9 +466,9 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
             ),
-            // SizedBox(
-            //   height: 20,
-            // ),
+            const SizedBox(
+              height: 90,
+            ),
             // SizedBox(
             //   height: 20,
             // ),
@@ -605,7 +612,7 @@ class _HomePageState extends State<HomePage> {
       //               ),
       //               GestureDetector(
       //                 onTap: () {
-      //                   // Navigator.pushNamed(context, RoutesName.test);
+      // Navigator.pushNamed(context, RoutesName.test);
       //                   StripeService.instance.makePayment();
       //                 },
       //                 child: Container(
@@ -1183,30 +1190,32 @@ class _HomePageState extends State<HomePage> {
                                 favouriteViewModel
                                     .deleteFavouriteId(hotelModel.hotelId);
                                 CherryToast.success(
-                                  title: Text("Đã xóa ra khỏi mục yêu thích!"),
+                                  title: const Text(
+                                      "Đã xóa ra khỏi mục yêu thích!"),
                                 ).show(context);
                               } else {
                                 favouriteViewModel
                                     .addFavouriteId(hotelModel.hotelId);
                                 CherryToast.success(
-                                  title: Text("Đã thêm vào mục yêu thích!"),
+                                  title:
+                                      const Text("Đã thêm vào mục yêu thích!"),
                                 ).show(context);
                               }
                             },
                             child: Container(
-                              padding: EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(10),
                               decoration: BoxDecoration(
                                   color: Colors.pink.withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(10)),
                               child: favouriteViewModel.checkFavouriteId(
                                           hotelModel.hotelId) ==
                                       false
-                                  ? Icon(
+                                  ? const Icon(
                                       FontAwesomeIcons.heart,
                                       color: Colors.pinkAccent,
                                       size: 17,
                                     )
-                                  : Icon(
+                                  : const Icon(
                                       FontAwesomeIcons.solidHeart,
                                       color: Colors.pinkAccent,
                                       size: 17,
@@ -1234,8 +1243,8 @@ class _HomePageState extends State<HomePage> {
       child: Container(
         decoration: BoxDecoration(
             color: Colors.white,
-            border:
-                Border.all(color: Color.fromRGBO(232, 234, 241, 1), width: 1),
+            border: Border.all(
+                color: const Color.fromRGBO(232, 234, 241, 1), width: 1),
             borderRadius: BorderRadius.circular(10)),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1253,8 +1262,7 @@ class _HomePageState extends State<HomePage> {
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(10),
-                          bottomLeft: Radius.circular(
-                              10)), // Bo tròn ảnh với bán kính 10
+                          bottomLeft: Radius.circular(10)),
                       image: DecorationImage(
                         image: NetworkImage(restaurantModel.restaurantImage),
                         fit: BoxFit.cover,
@@ -1387,8 +1395,8 @@ class _HomePageState extends State<HomePage> {
       child: Container(
         decoration: BoxDecoration(
             color: Colors.white,
-            border:
-                Border.all(color: Color.fromRGBO(232, 234, 241, 1), width: 1),
+            border: Border.all(
+                color: const Color.fromRGBO(232, 234, 241, 1), width: 1),
             borderRadius: BorderRadius.circular(10)),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1633,8 +1641,8 @@ class _HomePageState extends State<HomePage> {
           child: Container(
         decoration: BoxDecoration(
             color: Colors.white,
-            border:
-                Border.all(color: Color.fromRGBO(232, 234, 241, 1), width: 1),
+            border: Border.all(
+                color: const Color.fromRGBO(232, 234, 241, 1), width: 1),
             borderRadius: BorderRadius.circular(10)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -13,4 +13,9 @@ class RoutesName {
   static const String searchPage = "Search_Page";
   static const String detailRestaurant = "Detail_Restaunt_Screen";
   static const String test = "Simple";
+  static const String orderRestaurant = "Order_Restaurant";
+  static const String paymentRestaurant = "Payment_Restaurant";
+  static const String receiptRestaurantPage = "Receipt_Restaurant_Page";
+  static const String orderRestaurantDetail = "Order_Restaurant_Detail";
+  static const String favouritePage = "Favourite_Page";
 }

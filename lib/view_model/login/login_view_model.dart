@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:my_hotel_and_restaurants/data/response/dto_object.dart';
 import 'package:my_hotel_and_restaurants/model/customer_model.dart';
@@ -129,7 +129,9 @@ class LoginViewModel extends ChangeNotifier {
       return response;
     } catch (error) {
       ggSignin.disconnect();
-      print('Lỗi đăng nhập: $error');
+      if (kDebugMode) {
+        print('Lỗi đăng nhập: $error');
+      }
       setGGLoading(false);
       throw Exception(error.toString());
     }

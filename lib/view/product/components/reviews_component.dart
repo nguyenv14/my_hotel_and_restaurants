@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:my_hotel_and_restaurants/configs/extensions.dart';
@@ -23,7 +21,7 @@ class _ReviewComponentState extends State<ReviewComponent> {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -44,9 +42,9 @@ class _ReviewComponentState extends State<ReviewComponent> {
             ],
           ),
         ),
-        widget.hotelModel.evaluates!.length != 0
+        widget.hotelModel.evaluates!.isNotEmpty
             ? Container(
-                padding: EdgeInsets.only(left: 10),
+                padding: const EdgeInsets.only(left: 10),
                 width: context.mediaQueryWidth,
                 height: context.mediaQueryHeight * 0.2,
                 child: ListView.builder(
@@ -58,7 +56,7 @@ class _ReviewComponentState extends State<ReviewComponent> {
                   },
                 ),
               )
-            : Container(
+            : SizedBox(
                 width: context.mediaQueryWidth,
                 height: context.mediaQueryHeight * 0.2,
                 child: Column(
@@ -79,8 +77,8 @@ class _ReviewComponentState extends State<ReviewComponent> {
   Widget itemReviews(EvaluateModel evaluateModel) {
     return Container(
       width: context.mediaQueryWidth * 0.74,
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: Colors.grey, width: 1)),
@@ -98,16 +96,16 @@ class _ReviewComponentState extends State<ReviewComponent> {
                     border: Border.all(color: Colors.grey, width: 1),
                     borderRadius: BorderRadius.circular(50),
                   ),
-                  child: Icon(FontAwesomeIcons.solidUser),
+                  child: const Icon(FontAwesomeIcons.solidUser),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Container(
+                    SizedBox(
                       width: 120,
                       child: Text(
                         evaluateModel.customerName,
@@ -115,7 +113,7 @@ class _ReviewComponentState extends State<ReviewComponent> {
                             fontSize: 14, fontWeight: FontWeight.bold),
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: 120,
                       height: 20,
                       child: ListView.builder(
@@ -148,7 +146,7 @@ class _ReviewComponentState extends State<ReviewComponent> {
               )
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Text(

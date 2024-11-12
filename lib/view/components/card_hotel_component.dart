@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_hotel_and_restaurants/configs/color.dart';
+import 'package:my_hotel_and_restaurants/configs/routes/routes_name.dart';
 import 'package:my_hotel_and_restaurants/configs/text_style.dart';
 import 'package:my_hotel_and_restaurants/model/hotel_model.dart';
+import 'package:my_hotel_and_restaurants/utils/app_functions.dart';
 import 'package:my_hotel_and_restaurants/view/components/booking_button.dart';
 import 'package:my_hotel_and_restaurants/view/components/button_favorite_component.dart';
 import 'package:my_hotel_and_restaurants/view_model/favourite_view_model.dart';
@@ -13,11 +15,11 @@ class HotelCard extends StatefulWidget {
   final VoidCallback onPressed; // Thêm tham số onPressed
 
   const HotelCard({
-    Key? key,
+    super.key,
     required this.onPressed,
     required this.hotelModel,
     required this.favouriteViewModel,
-  }) : super(key: key);
+  });
 
   @override
   State<HotelCard> createState() => _HotelCardState();
@@ -60,6 +62,7 @@ class _HotelCardState extends State<HotelCard> {
                 ),
                 FavoriteButton(
                   hotelId: widget.hotelModel.hotelId,
+                  type: 1,
                 ),
               ],
             ),
@@ -96,7 +99,7 @@ class _HotelCardState extends State<HotelCard> {
                         children: [
                           TextSpan(
                             text:
-                                "${widget.hotelModel.rooms.first.roomTypes.first.typeRoomPrice}đ",
+                                "${AppFunctions.formatNumber(widget.hotelModel.rooms.first.roomTypes.first.typeRoomPrice)}đ",
                             style: MyTextStyle.textStyle(
                               fontSize: 15,
                               color: ColorData.myColor,
@@ -122,7 +125,7 @@ class _HotelCardState extends State<HotelCard> {
                       children: [
                         Text(
                           MyTextStyle.truncateString(
-                              widget.hotelModel.hotelName, 20),
+                              widget.hotelModel.hotelName, 15),
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -150,7 +153,10 @@ class _HotelCardState extends State<HotelCard> {
                       ],
                     ),
                     BookingButton(
-                      onPressed: widget.onPressed,
+                      onPressed: () {
+                        Navigator.pushNamed(context, RoutesName.detailHotel,
+                            arguments: widget.hotelModel.hotelId);
+                      },
                       text: "Booking",
                       color: ColorData.myColor,
                       icon: FontAwesomeIcons.plus,

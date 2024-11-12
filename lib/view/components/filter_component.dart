@@ -10,7 +10,7 @@ class HotelFilterComponent extends StatefulWidget {
   final VoidCallback onApply;
 
   const HotelFilterComponent({
-    Key? key,
+    super.key,
     required this.title,
     required this.sortOptions,
     this.initialStarRating = 4,
@@ -18,7 +18,7 @@ class HotelFilterComponent extends StatefulWidget {
     this.initialMinPrice = 100,
     this.initialMaxPrice = 500,
     required this.onApply,
-  }) : super(key: key);
+  });
 
   @override
   _HotelFilterComponentState createState() => _HotelFilterComponentState();
@@ -45,7 +45,7 @@ class _HotelFilterComponentState extends State<HotelFilterComponent> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -55,20 +55,20 @@ class _HotelFilterComponentState extends State<HotelFilterComponent> {
         children: [
           Text(
             widget.title,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
               color: Colors.pink,
             ),
           ),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             'Sort By',
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           DropdownButton<String>(
             value: _selectedSort,
-            icon: Icon(Icons.arrow_downward),
+            icon: const Icon(Icons.arrow_downward),
             isExpanded: true,
             onChanged: (String? newValue) {
               setState(() {
@@ -83,12 +83,12 @@ class _HotelFilterComponentState extends State<HotelFilterComponent> {
               );
             }).toList(),
           ),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             'Hotel Ranking',
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(5, (index) {
@@ -99,7 +99,7 @@ class _HotelFilterComponentState extends State<HotelFilterComponent> {
                   });
                 },
                 child: Container(
-                  padding: EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color:
                         _selectedStar == index + 1 ? Colors.pink : Colors.white,
@@ -132,7 +132,7 @@ class _HotelFilterComponentState extends State<HotelFilterComponent> {
               );
             }),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -140,8 +140,8 @@ class _HotelFilterComponentState extends State<HotelFilterComponent> {
               _buildHotelTypeButton('Khu nghỉ dưỡng'),
             ],
           ),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             'Price Ranges',
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
@@ -161,7 +161,7 @@ class _HotelFilterComponentState extends State<HotelFilterComponent> {
               });
             },
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -169,17 +169,17 @@ class _HotelFilterComponentState extends State<HotelFilterComponent> {
               Text('${_currentMaxPrice.toStringAsFixed(0)}k'),
             ],
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           ElevatedButton(
             onPressed: widget.onApply,
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.pink,
-              minimumSize: Size(double.infinity, 50),
+              minimumSize: const Size(double.infinity, 50),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),
             ),
-            child: Text(
+            child: const Text(
               'APPLY',
               style: TextStyle(color: Colors.white, fontSize: 18),
             ),
@@ -199,7 +199,7 @@ class _HotelFilterComponentState extends State<HotelFilterComponent> {
       style: OutlinedButton.styleFrom(
         backgroundColor:
             _selectedHotelType == type ? Colors.pink : Colors.white,
-        side: BorderSide(color: Colors.pink),
+        side: const BorderSide(color: Colors.pink),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),

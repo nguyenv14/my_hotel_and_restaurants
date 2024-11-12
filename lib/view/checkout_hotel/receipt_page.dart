@@ -4,7 +4,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobkit_dashed_border/mobkit_dashed_border.dart';
 import 'package:my_hotel_and_restaurants/configs/extensions.dart';
 import 'package:my_hotel_and_restaurants/configs/text_style.dart';
-import 'package:my_hotel_and_restaurants/data/response/app_url.dart';
 import 'package:my_hotel_and_restaurants/model/order_model.dart';
 import 'package:my_hotel_and_restaurants/utils/app_functions.dart';
 import 'package:my_hotel_and_restaurants/view/main_screen.dart';
@@ -27,7 +26,7 @@ class _ReceiptPageState extends State<ReceiptPage> {
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-              builder: (context) => MainScreen(),
+              builder: (context) => const MainScreen(),
             ),
             (route) => false);
         return true;
@@ -35,19 +34,19 @@ class _ReceiptPageState extends State<ReceiptPage> {
       child: Scaffold(
         body: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 70,
             ),
             Center(
               child: Container(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                     color: Colors.greenAccent.withOpacity(0.3),
                     borderRadius: BorderRadius.circular(40)),
                 child: Image.asset("assets/images/check.png", width: 40),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Text(
@@ -58,23 +57,23 @@ class _ReceiptPageState extends State<ReceiptPage> {
                   fontWeight: FontWeight.bold),
             ),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+              margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: Colors.grey, width: 0.5)),
               child: Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10),
                     child: Row(
                       children: [
                         CachedNetworkImage(
-                          imageUrl: AppUrl.hotelImage +
-                              widget.orderModel.orderDetailsModel.hotelModel
-                                  .hotelImage,
+                          imageUrl: widget.orderModel.orderDetailsModel!
+                              .hotelModel.hotelImage,
                           imageBuilder: (context, imageProvider) => Container(
-                            width: context.mediaQueryWidth * 0.25,
+                            width: context.mediaQueryWidth * 0.28,
                             height: context.mediaQueryHeight * 0.12,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
@@ -85,28 +84,28 @@ class _ReceiptPageState extends State<ReceiptPage> {
                             ),
                           ),
                           placeholder: (context, url) =>
-                              CircularProgressIndicator(),
+                              const CircularProgressIndicator(),
                           errorWidget: (context, url, error) =>
-                              Icon(Icons.error),
+                              const Icon(Icons.error),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
-                        Container(
+                        SizedBox(
                           height: context.mediaQueryHeight * 0.12,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                widget.orderModel.orderDetailsModel.hotelName,
+                                widget.orderModel.orderDetailsModel!.hotelName,
                                 style: MyTextStyle.textStyle(
                                     fontSize: 16,
                                     color: Colors.blueGrey,
                                     fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                widget.orderModel.orderDetailsModel.roomName,
+                                widget.orderModel.orderDetailsModel!.roomName,
                                 style: MyTextStyle.textStyle(
                                     fontSize: 14, color: Colors.black),
                               ),
@@ -120,25 +119,22 @@ class _ReceiptPageState extends State<ReceiptPage> {
                                     children: [
                                       itemOptionOrderHotel(
                                           FontAwesomeIcons.addressBook,
-                                          widget.orderModel.orderDetailsModel
-                                                  .roomModel.roomAmountOfPeople
-                                                  .toString() +
-                                              " guest"),
-                                      SizedBox(
+                                          "${widget.orderModel.orderDetailsModel!.roomModel.roomAmountOfPeople} guest"),
+                                      const SizedBox(
                                         height: 5,
                                       ),
                                       itemOptionOrderHotel(
                                           FontAwesomeIcons.bed,
                                           widget
                                                       .orderModel
-                                                      .orderDetailsModel
+                                                      .orderDetailsModel!
                                                       .roomTypeModel
                                                       .typeRoomBed ==
                                                   1
                                               ? "Giường đơn"
                                               : widget
                                                           .orderModel
-                                                          .orderDetailsModel
+                                                          .orderDetailsModel!
                                                           .roomTypeModel
                                                           .typeRoomBed ==
                                                       2
@@ -155,16 +151,13 @@ class _ReceiptPageState extends State<ReceiptPage> {
                                     children: [
                                       itemOptionOrderHotel(
                                           FontAwesomeIcons.layerGroup,
-                                          widget.orderModel.orderDetailsModel
-                                                  .roomModel.roomAcreage
-                                                  .toString() +
-                                              "m2"),
-                                      SizedBox(
+                                          "${widget.orderModel.orderDetailsModel!.roomModel.roomAcreage}m2"),
+                                      const SizedBox(
                                         height: 5,
                                       ),
                                       itemOptionOrderHotel(
                                           FontAwesomeIcons.eye,
-                                          widget.orderModel.orderDetailsModel
+                                          widget.orderModel.orderDetailsModel!
                                               .roomModel.roomView)
                                     ],
                                   ),
@@ -177,12 +170,12 @@ class _ReceiptPageState extends State<ReceiptPage> {
                     ),
                   ),
                   Container(
-                    // width: ,
                     height: 0.5,
                     color: Colors.grey.shade400,
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -206,15 +199,15 @@ class _ReceiptPageState extends State<ReceiptPage> {
                           ],
                         ),
                         Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               border:
                                   Border.all(color: Colors.grey, width: 0.5)),
                           child: Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 FontAwesomeIcons.solidMoon,
                                 color: Colors.blueAccent,
                               ),
@@ -239,7 +232,7 @@ class _ReceiptPageState extends State<ReceiptPage> {
                                   color: Colors.grey),
                             ),
                             Text(
-                              widget.orderModel.endDay,
+                              widget.orderModel.endDay!,
                               style: MyTextStyle.textStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
@@ -254,8 +247,8 @@ class _ReceiptPageState extends State<ReceiptPage> {
               ),
             ),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey, width: 0.5),
                   color: Colors.white,
@@ -270,7 +263,7 @@ class _ReceiptPageState extends State<ReceiptPage> {
                         style: MyTextStyle.textStyle(fontSize: 14),
                       ),
                       Text(
-                        widget.orderModel.orderCode,
+                        widget.orderModel.orderCode!,
                         style: MyTextStyle.textStyle(
                             fontSize: 14,
                             color: Colors.redAccent,
@@ -278,7 +271,7 @@ class _ReceiptPageState extends State<ReceiptPage> {
                       )
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   Container(
@@ -290,7 +283,7 @@ class _ReceiptPageState extends State<ReceiptPage> {
                   //         differenceDay.inDays.toString() +
                   //         " ngày",
                   //     price),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   // itemPriceOrder("1 phòng x 10 ngày", 2000),
@@ -314,20 +307,17 @@ class _ReceiptPageState extends State<ReceiptPage> {
                         ],
                       ),
                       Text(
-                        AppFunctions.formatNumber(widget
-                                    .orderModel.orderDetailsModel.priceRoom +
-                                widget.orderModel.couponSalePrice.toDouble()) +
-                            "đ",
+                        "${AppFunctions.formatNumber(widget.orderModel.orderDetailsModel!.priceRoom + widget.orderModel.couponSalePrice!.toDouble())}đ",
                         style: MyTextStyle.textStyle(
                             fontSize: 14, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
 
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  widget.orderModel.couponSalePrice > 0
+                  widget.orderModel.couponSalePrice! > 0
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -337,27 +327,23 @@ class _ReceiptPageState extends State<ReceiptPage> {
                                   "Mã giảm giá",
                                   style: MyTextStyle.textStyle(fontSize: 12),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 10,
                                 ),
                                 Container(
-                                    padding: EdgeInsets.symmetric(
+                                    padding: const EdgeInsets.symmetric(
                                         horizontal: 5, vertical: 2),
                                     decoration: BoxDecoration(
                                         border: Border.all(color: Colors.red)),
                                     child: Text(
-                                      widget.orderModel.couponNameCode,
+                                      widget.orderModel.couponNameCode!,
                                       style: MyTextStyle.textStyle(
                                           fontSize: 12, color: Colors.red),
                                     )),
                               ],
                             ),
                             Text(
-                              "-" +
-                                  AppFunctions.formatNumber(widget
-                                      .orderModel.couponSalePrice
-                                      .toDouble()) +
-                                  "đ",
+                              "-${AppFunctions.formatNumber(widget.orderModel.couponSalePrice!.toDouble())}đ",
                               style: MyTextStyle.textStyle(
                                   fontSize: 13,
                                   color: Colors.green,
@@ -367,21 +353,22 @@ class _ReceiptPageState extends State<ReceiptPage> {
                         )
                       : Container(),
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 15),
+                    margin: const EdgeInsets.symmetric(vertical: 15),
                     decoration: BoxDecoration(
                         border: Border.all(
                             width: 0.5, color: Colors.black.withOpacity(0.2))),
                   ),
                   itemPriceOrder("Tổng tiền thanh toán",
-                      widget.orderModel.orderDetailsModel.priceRoom.toDouble(),
+                      widget.orderModel.orderDetailsModel!.priceRoom.toDouble(),
                       // price + feeService - priceCouponSale,
                       fontWeight: FontWeight.bold),
 
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         border: DashedBorder.all(
@@ -411,7 +398,7 @@ class _ReceiptPageState extends State<ReceiptPage> {
           style: MyTextStyle.textStyle(fontSize: 12, fontWeight: fontWeight),
         ),
         Text(
-          AppFunctions.formatNumber(price) + "đ",
+          "${AppFunctions.formatNumber(price)}đ",
           style: MyTextStyle.textStyle(fontSize: 13, fontWeight: fontWeight),
         )
       ],
@@ -422,28 +409,25 @@ class _ReceiptPageState extends State<ReceiptPage> {
     IconData iconData,
     String text,
   ) {
-    return Container(
-      // width: context.mediaQueryWidth * 0.24,
-      child: Row(
-        children: [
-          Icon(
-            iconData,
-            size: 12,
-            color: Colors.amber,
+    return Row(
+      children: [
+        Icon(
+          iconData,
+          size: 12,
+          color: Colors.amber,
+        ),
+        const SizedBox(
+          width: 5,
+        ),
+        SizedBox(
+          width: context.mediaQueryWidth * 0.2,
+          child: Text(
+            text,
+            overflow: TextOverflow.ellipsis,
+            style: MyTextStyle.textStyle(fontSize: 12, color: Colors.grey),
           ),
-          SizedBox(
-            width: 5,
-          ),
-          Container(
-            width: context.mediaQueryWidth * 0.2,
-            child: Text(
-              text,
-              overflow: TextOverflow.ellipsis,
-              style: MyTextStyle.textStyle(fontSize: 12, color: Colors.grey),
-            ),
-          )
-        ],
-      ),
+        )
+      ],
     );
   }
 }

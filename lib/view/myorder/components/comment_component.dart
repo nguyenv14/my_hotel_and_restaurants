@@ -30,8 +30,8 @@ class _CommentComponentState extends State<CommentComponent> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("Đánh giá 🏨"),
-      content: Container(
+      title: const Text("Đánh giá 🏨"),
+      content: SizedBox(
         height: context.mediaQueryHeight * 0.3,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,8 +51,8 @@ class _CommentComponentState extends State<CommentComponent> {
                   allowHalfRating: false,
                   itemCount: 5,
                   itemSize: 15,
-                  itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
-                  itemBuilder: (context, _) => Icon(
+                  itemPadding: const EdgeInsets.symmetric(horizontal: 2.0),
+                  itemBuilder: (context, _) => const Icon(
                     Icons.star,
                     color: Colors.amber,
                   ),
@@ -79,8 +79,8 @@ class _CommentComponentState extends State<CommentComponent> {
                   allowHalfRating: false,
                   itemCount: 5,
                   itemSize: 15,
-                  itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
-                  itemBuilder: (context, _) => Icon(
+                  itemPadding: const EdgeInsets.symmetric(horizontal: 2.0),
+                  itemBuilder: (context, _) => const Icon(
                     Icons.star,
                     color: Colors.amber,
                   ),
@@ -107,8 +107,8 @@ class _CommentComponentState extends State<CommentComponent> {
                   allowHalfRating: false,
                   itemCount: 5,
                   itemSize: 15,
-                  itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
-                  itemBuilder: (context, _) => Icon(
+                  itemPadding: const EdgeInsets.symmetric(horizontal: 2.0),
+                  itemBuilder: (context, _) => const Icon(
                     Icons.star,
                     color: Colors.amber,
                   ),
@@ -135,8 +135,8 @@ class _CommentComponentState extends State<CommentComponent> {
                   allowHalfRating: false,
                   itemCount: 5,
                   itemSize: 15,
-                  itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
-                  itemBuilder: (context, _) => Icon(
+                  itemPadding: const EdgeInsets.symmetric(horizontal: 2.0),
+                  itemBuilder: (context, _) => const Icon(
                     Icons.star,
                     color: Colors.amber,
                   ),
@@ -163,8 +163,8 @@ class _CommentComponentState extends State<CommentComponent> {
                   allowHalfRating: false,
                   itemCount: 5,
                   itemSize: 15,
-                  itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
-                  itemBuilder: (context, _) => Icon(
+                  itemPadding: const EdgeInsets.symmetric(horizontal: 2.0),
+                  itemBuilder: (context, _) => const Icon(
                     Icons.star,
                     color: Colors.amber,
                   ),
@@ -176,15 +176,15 @@ class _CommentComponentState extends State<CommentComponent> {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
-            LineComponent(),
-            SizedBox(
+            const LineComponent(),
+            const SizedBox(
               height: 5,
             ),
-            Text("Bình luận"),
-            SizedBox(
+            const Text("Bình luận"),
+            const SizedBox(
               height: 5,
             ),
             InputFieldComponent(
@@ -203,16 +203,16 @@ class _CommentComponentState extends State<CommentComponent> {
           onPressed: () {
             Navigator.of(context).pop(); // Đóng hộp thoại
           },
-          child: Text('No'),
+          child: const Text('No'),
         ),
         TextButton(
           onPressed: () {
             widget.orderViewModel.sendCommentToOrder(
                 CustomerDB.getCustomer()!.customer_id!,
                 widget.orderModel.orderId,
-                widget.orderModel.orderDetailsModel.hotelId,
-                widget.orderModel.orderDetailsModel.roomId,
-                widget.orderModel.orderDetailsModel.typeRoomId,
+                widget.orderModel.orderDetailsModel!.hotelId,
+                widget.orderModel.orderDetailsModel!.roomId,
+                widget.orderModel.orderDetailsModel!.typeRoomId,
                 textEditingController.text,
                 price,
                 position,
@@ -221,7 +221,7 @@ class _CommentComponentState extends State<CommentComponent> {
                 convinient);
             Navigator.of(context).pop();
           },
-          child: Text('Yes'),
+          child: const Text('Yes'),
         ),
       ],
     );

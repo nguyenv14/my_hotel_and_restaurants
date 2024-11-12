@@ -1,21 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobkit_dashed_border/mobkit_dashed_border.dart';
 import 'package:my_hotel_and_restaurants/configs/color.dart';
 import 'package:my_hotel_and_restaurants/configs/extensions.dart';
 import 'package:my_hotel_and_restaurants/configs/routes/routes_name.dart';
 import 'package:my_hotel_and_restaurants/configs/text_style.dart';
-import 'package:my_hotel_and_restaurants/data/response/app_url.dart';
 import 'package:my_hotel_and_restaurants/model/order_model.dart';
 import 'package:my_hotel_and_restaurants/utils/app_functions.dart';
 import 'package:my_hotel_and_restaurants/utils/user_db.dart';
-import 'package:my_hotel_and_restaurants/view/login/components/InputFieldComponet.dart';
 import 'package:my_hotel_and_restaurants/view/myorder/components/comment_component.dart';
-import 'package:my_hotel_and_restaurants/view/product/components/line_component.dart';
 import 'package:my_hotel_and_restaurants/view_model/order_view_model.dart';
 
 class OrderComponent extends StatefulWidget {
@@ -32,38 +26,30 @@ class _OrderComponentState extends State<OrderComponent> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
         color: Colors.white,
+        // boxShadow: [
+        //   BoxShadow(
+        //     offset: Offset(1, 1),
+        //     blurRadius: 2,
+        //     spreadRadius: 2,
+        //     color: Colors.grey.withOpacity(0.5),
+        //   ),
+        // ],
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Color.fromRGBO(232, 234, 241, 1), width: 2),
       ),
       child: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "ORDER ID: " + widget.orderModel.orderCode,
-                style: MyTextStyle.textStyle(fontSize: 13, color: Colors.grey),
-              ),
-              Icon(
-                FontAwesomeIcons.ellipsisVertical,
-                color: Colors.grey,
-                size: 13,
-              )
-            ],
-          ),
-          LineComponent(),
-          Row(
             children: [
               CachedNetworkImage(
-                imageUrl: AppUrl.hotelImage +
-                    widget.orderModel.orderDetailsModel.hotelModel.hotelImage,
+                imageUrl:
+                    widget.orderModel.orderDetailsModel!.hotelModel.hotelImage,
                 imageBuilder: (context, imageProvider) => Container(
-                  width: context.mediaQueryWidth * 0.2,
-                  height: context.mediaQueryHeight * 0.1,
+                  width: context.mediaQueryWidth * 0.3,
+                  height: context.mediaQueryHeight * 0.12,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     image: DecorationImage(
@@ -72,64 +58,65 @@ class _OrderComponentState extends State<OrderComponent> {
                     ),
                   ),
                 ),
-                placeholder: (context, url) => CircularProgressIndicator(),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+                placeholder: (context, url) =>
+                    const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
-              SizedBox(
-                width: 10,
+              const SizedBox(
+                width: 15,
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.orderModel.orderDetailsModel.hotelName,
+                    MyTextStyle.truncateString(
+                        widget.orderModel.orderDetailsModel!.hotelName, 20),
                     style: MyTextStyle.textStyle(
-                        fontSize: 15,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
-                        color: ColorData.myColor),
+                        color: Colors.black),
                   ),
-                  SizedBox(
-                    height: 5,
+                  const SizedBox(
+                    height: 12,
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Icon(
+                      const Icon(
                         FontAwesomeIcons.calendar,
                         size: 14,
-                        color: Color.fromRGBO(255, 147, 70, 1),
+                        color: Colors.black,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 4,
                       ),
                       Text(
-                        widget.orderModel.startDay +
-                            "/" +
-                            widget.orderModel.endDay,
+                        "${widget.orderModel.startDay}/${widget.orderModel.endDay!}",
                         style: MyTextStyle.textStyle(
-                            fontSize: 12, color: Colors.grey),
+                            fontSize: 12, color: Colors.black),
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 5,
+                  const SizedBox(
+                    height: 12,
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Icon(
+                      const Icon(
                         FontAwesomeIcons.doorOpen,
                         size: 14,
-                        color: Color.fromRGBO(255, 147, 70, 1),
+                        color: ColorData.myColor,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 4,
                       ),
                       Text(
-                        widget.orderModel.orderDetailsModel.roomName,
+                        MyTextStyle.truncateString(
+                            widget.orderModel.orderDetailsModel!.roomName, 27),
                         style: MyTextStyle.textStyle(
-                            fontSize: 12, color: Colors.grey),
+                            fontSize: 12, color: ColorData.myColor),
                       ),
                     ],
                   ),
@@ -137,16 +124,17 @@ class _OrderComponentState extends State<OrderComponent> {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 13, vertical: 5),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(20),
                     color: AppFunctions.selectColorInOrderByStatus(
                             widget.orderModel.orderStatus)
                         .withOpacity(0.2)),
@@ -156,29 +144,38 @@ class _OrderComponentState extends State<OrderComponent> {
                       : (widget.orderModel.orderStatus == 1 ||
                               widget.orderModel.orderStatus == 2
                           ? "completed"
-                          : "cancel"),
+                          : "canceled"),
                   style: MyTextStyle.textStyle(
                       fontSize: 12,
                       color: AppFunctions.selectColorInOrderByStatus(
                           widget.orderModel.orderStatus)),
                 ),
               ),
-              Text(
-                AppFunctions.calculatePriceOrder(
-                        widget.orderModel.orderDetailsModel) +
-                    "đ",
-                style: MyTextStyle.textStyle(
-                    fontSize: 15,
-                    color: Colors.red,
-                    fontWeight: FontWeight.bold),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 13, vertical: 5),
+                decoration: BoxDecoration(
+                    color: ColorData.myColor,
+                    borderRadius: BorderRadius.circular(20)),
+                child: Text(
+                  "${AppFunctions.calculatePriceOrder(widget.orderModel.orderDetailsModel!)}đ",
+                  style: MyTextStyle.textStyle(
+                      fontSize: 13,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
             ],
           ),
-          widget.orderModel.couponSalePrice > 0
+          const SizedBox(
+            height: 10,
+          ),
+          widget.orderModel.couponSalePrice! > 0
               ? Container(
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                  decoration: BoxDecoration(
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                  decoration: const BoxDecoration(
                       border: DashedBorder.fromBorderSide(
                           dashLength: 10,
                           side: BorderSide(color: Colors.amber, width: 2))),
@@ -187,15 +184,15 @@ class _OrderComponentState extends State<OrderComponent> {
                     children: [
                       Row(
                         children: [
-                          Icon(
+                          const Icon(
                             FontAwesomeIcons.ticket,
                             color: Colors.amber,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 8,
                           ),
                           Text(
-                            "Mã giảm: " + widget.orderModel.couponNameCode,
+                            "Mã giảm: ${widget.orderModel.couponNameCode!}",
                             style: MyTextStyle.textStyle(
                                 color: Colors.amberAccent,
                                 fontSize: 14,
@@ -204,10 +201,7 @@ class _OrderComponentState extends State<OrderComponent> {
                         ],
                       ),
                       Text(
-                        "-" +
-                            AppFunctions.formatNumber(
-                                widget.orderModel.couponSalePrice.toDouble()) +
-                            "đ",
+                        "-${AppFunctions.formatNumber(widget.orderModel.couponSalePrice!.toDouble())}đ",
                         style: MyTextStyle.textStyle(
                             color: Colors.redAccent,
                             fontSize: 14,
@@ -217,7 +211,7 @@ class _OrderComponentState extends State<OrderComponent> {
                   ),
                 )
               : Container(),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           widget.orderModel.orderStatus == 0
@@ -227,23 +221,24 @@ class _OrderComponentState extends State<OrderComponent> {
                       context: context,
                       builder: (context) {
                         return AlertDialog(
-                          title: Text('Thông báo'),
-                          content:
-                              Text('Bạn chắc chắn muốn hủy đơn đặt phòng?'),
+                          title: const Text('Thông báo'),
+                          content: const Text(
+                              'Bạn chắc chắn muốn hủy đơn đặt phòng?'),
                           actions: <Widget>[
                             TextButton(
                               onPressed: () {
-                                Navigator.of(context).pop(); // Đóng hộp thoại
+                                Navigator.of(context).pop();
                               },
-                              child: Text('No'),
+                              child: const Text('No'),
                             ),
                             TextButton(
                               onPressed: () {
                                 widget.orderViewModel.cancelOrderByCustomerId(
                                     CustomerDB.getCustomer()!.customer_id!,
                                     widget.orderModel.orderId);
+                                Navigator.of(context).pop();
                               },
-                              child: Text('Yes'),
+                              child: const Text('Yes'),
                             ),
                           ],
                         );
@@ -252,7 +247,7 @@ class _OrderComponentState extends State<OrderComponent> {
                   },
                   child: Container(
                     width: context.mediaQueryWidth * 0.85,
-                    padding: EdgeInsets.symmetric(vertical: 6),
+                    padding: const EdgeInsets.symmetric(vertical: 6),
                     decoration: BoxDecoration(
                         color: Colors.redAccent,
                         borderRadius: BorderRadius.circular(10)),
@@ -266,54 +261,65 @@ class _OrderComponentState extends State<OrderComponent> {
                   ),
                 )
               : (widget.orderModel.orderStatus == 1
-                  ? GestureDetector(
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return CommentComponent(
-                              orderViewModel: widget.orderViewModel,
-                              orderModel: widget.orderModel,
-                            );
-                          },
-                        );
-                      },
-                      child: Container(
-                        width: context.mediaQueryWidth * 0.85,
-                        padding: EdgeInsets.symmetric(vertical: 6),
-                        decoration: BoxDecoration(
+                  ? SizedBox(
+                      width: context.mediaQueryWidth * 0.8,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return CommentComponent(
+                                orderViewModel: widget.orderViewModel,
+                                orderModel: widget.orderModel,
+                              );
+                            },
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: const BorderSide(
+                              color: Colors.green,
+                            ),
+                          ),
+                        ),
+                        child: const Text(
+                          "Đánh giá",
+                          style: TextStyle(
                             color: Colors.green,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Center(
-                          child: Text(
-                            "Đánh giá",
-                            style: MyTextStyle.textStyle(
-                                fontSize: 14, color: Colors.white),
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),
                     )
                   : Container()),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
-          GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, RoutesName.orderDetail,
-                  arguments: widget.orderModel);
-            },
-            child: Container(
-              width: context.mediaQueryWidth * 0.85,
-              padding: EdgeInsets.symmetric(vertical: 6),
-              decoration: BoxDecoration(
-                  // color: Colors.blueAccent,
-                  border: Border.all(width: 1, color: Colors.blueAccent),
-                  borderRadius: BorderRadius.circular(10)),
-              child: Center(
-                child: Text(
-                  "Xem chi tiết",
-                  style: MyTextStyle.textStyle(
-                      fontSize: 14, color: Colors.blueAccent),
+          SizedBox(
+            width: context.mediaQueryWidth * 0.8,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, RoutesName.orderDetail,
+                    arguments: widget.orderModel);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  side: const BorderSide(
+                    color: Colors.blueAccent,
+                  ),
+                ),
+              ),
+              child: const Text(
+                "Xem chi tiết",
+                style: TextStyle(
+                  color: Colors.blueAccent,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),

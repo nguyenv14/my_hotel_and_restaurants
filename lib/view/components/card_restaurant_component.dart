@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_hotel_and_restaurants/configs/color.dart';
-import 'package:my_hotel_and_restaurants/configs/extensions.dart';
 import 'package:my_hotel_and_restaurants/configs/text_style.dart';
 import 'package:my_hotel_and_restaurants/model/restaurant_model.dart';
 import 'package:my_hotel_and_restaurants/view/components/booking_button.dart';
 import 'package:my_hotel_and_restaurants/view/components/button_favorite_component.dart';
+import 'package:my_hotel_and_restaurants/view_model/favourite_view_model.dart';
 
 class RestaurantCard extends StatefulWidget {
   final RestaurantModel restaurantModel;
-  final VoidCallback onFavoritePressed; // New callback for favorite button
-  final VoidCallback onBookingPressed; // New callback for booking button
+  final FavouriteViewModel favouriteViewModel;
+  final VoidCallback onFavoritePressed;
+  final VoidCallback onBookingPressed;
 
   const RestaurantCard({
-    Key? key,
-    required this.onFavoritePressed, // Add this line
+    super.key,
+    required this.onFavoritePressed,
     required this.onBookingPressed,
-    required this.restaurantModel, // Add this line
-  }) : super(key: key);
+    required this.restaurantModel,
+    required this.favouriteViewModel,
+  });
 
   @override
   State<RestaurantCard> createState() => _RestaurantCardState();
@@ -27,7 +29,7 @@ class _RestaurantCardState extends State<RestaurantCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(10),
+      margin: const EdgeInsets.all(10),
       width: 250,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -58,9 +60,10 @@ class _RestaurantCardState extends State<RestaurantCard> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                // FavoriteButton(
-                //   onPressed: widget.onFavoritePressed, // Use the callback
-                // ),
+                FavoriteButton(
+                  hotelId: widget.restaurantModel.restaurantId,
+                  type: 0,
+                ),
               ],
             ),
           ),
@@ -110,7 +113,7 @@ class _RestaurantCardState extends State<RestaurantCard> {
                         const SizedBox(height: 4),
                         Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.location_on,
                               size: 16,
                               color: ColorData.myColor,

@@ -17,7 +17,7 @@ class CardOrderComponent extends StatelessWidget {
   final VoidCallback onPressed;
 
   const CardOrderComponent({
-    Key? key,
+    super.key,
     required this.hotelName,
     required this.imageUrl,
     required this.orderDate,
@@ -27,7 +27,7 @@ class CardOrderComponent extends StatelessWidget {
     required this.price,
     required this.status,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class CardOrderComponent extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Colors.black12,
               blurRadius: 6,

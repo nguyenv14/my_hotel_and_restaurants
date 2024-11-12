@@ -20,8 +20,20 @@ class RestaurantRepositoryImp implements RestaurantRepository {
   @override
   Future<ObjectDTO> fetchRestaurantById(int index) async {
     try {
-      ObjectDTO objectDTO = await _apiServices.getGetApiResponse(
-          "${AppUrl.restaurantById}?restaurant_id=" + index.toString());
+      ObjectDTO objectDTO = await _apiServices
+          .getGetApiResponse("${AppUrl.restaurantById}?restaurant_id=$index");
+      return objectDTO;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  @override
+  Future<ObjectDTO> fetchRestaurantFavouriteId(
+      Map<Object?, Object> data) async {
+    try {
+      ObjectDTO objectDTO = await _apiServices.getPostApiResponse(
+          AppUrl.restaurantFavourite, data);
       return objectDTO;
     } catch (e) {
       throw Exception(e);

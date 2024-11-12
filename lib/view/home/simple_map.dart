@@ -10,22 +10,22 @@ class SimpleMap extends StatefulWidget {
 }
 
 class _SimpleMapState extends State<SimpleMap> {
-  static final LatLng _kMapCenter =
+  static const LatLng _kMapCenter =
       LatLng(19.018255973653343, 72.84793849278007);
 
-  static final CameraPosition _kInitialPosition =
+  static const CameraPosition _kInitialPosition =
       CameraPosition(target: _kMapCenter, zoom: 11.0, tilt: 0, bearing: 0);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Google Maps Demo'),
+        title: const Text('Google Maps Demo'),
       ),
-      body: Container(
+      body: SizedBox(
         width: context.mediaQueryWidth * 1,
         height: context.mediaQueryHeight * 0.2,
-        child: GoogleMap(
+        child: const GoogleMap(
           initialCameraPosition: _kInitialPosition,
         ),
       ),

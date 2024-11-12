@@ -1,7 +1,5 @@
 import 'package:cherry_toast/cherry_toast.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_hotel_and_restaurants/configs/extensions.dart';
 import 'package:my_hotel_and_restaurants/configs/text_style.dart';
@@ -27,6 +25,7 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
   TextEditingController phoneEdit = TextEditingController(
       text: "0" + CustomerDB.getCustomer()!.customer_phone.toString());
   bool isChange = false;
+
   @override
   Widget build(BuildContext context) {
     nameEdit.addListener(() {

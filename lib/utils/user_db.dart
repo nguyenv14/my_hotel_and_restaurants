@@ -10,8 +10,7 @@ class CustomerDB {
 
   static CustomerModel? getCustomer() {
     final box = GetStorage();
-    CustomerModel? customer = CustomerModel.fromJson(box.read("USER") ?? null!);
-    print(customer.customer_email);
+    CustomerModel? customer = CustomerModel.fromJson(box.read("USER"));
     return customer;
   }
 
@@ -28,7 +27,6 @@ class CustomerDB {
   static bool checkAuth() {
     final box = GetStorage();
     dynamic customerData = box.read("USER");
-    CustomerModel? customer;
     if (customerData != null) {
       // customer = CustomerModel.fromJson(customerData);
       return true;

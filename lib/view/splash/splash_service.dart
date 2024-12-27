@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:my_hotel_and_restaurants/configs/routes/routes_name.dart';
 import 'package:my_hotel_and_restaurants/utils/user_db.dart';
-import 'package:my_hotel_and_restaurants/view_model/customer_view_model.dart';
-import 'package:provider/provider.dart';
 
 class SplashService {
   void checkAuth(BuildContext context) {

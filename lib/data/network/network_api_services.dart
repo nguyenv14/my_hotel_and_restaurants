@@ -40,10 +40,6 @@ class NetworkApiService implements BaseApiServices {
   @override
   Future<ObjectDTO> getPostApiResponse(
       String url, Map<Object?, Object> data) async {
-    if (kDebugMode) {
-      print(url);
-      print(data.toString());
-    }
     try {
       Response response = await post(Uri.parse(url), body: data)
           .timeout(const Duration(seconds: 10));
@@ -81,6 +77,37 @@ class NetworkApiService implements BaseApiServices {
       default:
         throw FetchDataException(
             'Error occured while communicating with server');
+    }
+  }
+
+  @override
+  Future<ObjectDTO> getPostApiCheckoutResponse(
+      String url, Map<String?, dynamic> data) async {
+    if (kDebugMode) {
+      print(url);
+      print(data.toString());
+    }
+    try {
+      Response response = await post(
+        Uri.parse(url),
+        body: json
+            .encode(data), // Sử dụng json.encode để chuyển đổi thành chuỗi JSON
+        headers: {
+          'Content-Type': 'application/json', // Thiết lập tiêu đề Content-Type
+        },
+      ).timeout(const Duration(seconds: 10));
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        final objectDTO = ObjectDTO.fromJson(responseData);
+        return objectDTO;
+      } else {
+        throw FetchDataException(
+            'Failed to fetch data. Status code: ${response.statusCode}');
+      }
+    } on SocketException {
+      throw FetchDataException("No internet connection");
+    } catch (e) {
+      throw FetchDataException("Error: $e");
     }
   }
 }

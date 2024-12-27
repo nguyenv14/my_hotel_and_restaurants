@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobkit_dashed_border/mobkit_dashed_border.dart';
@@ -23,7 +22,7 @@ class _AlertSelectCouponState extends State<AlertSelectCoupon> {
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: Colors.white,
-      surfaceTintColor: Color.fromRGBO(246, 248, 251, 1),
+      surfaceTintColor: const Color.fromRGBO(246, 248, 251, 1),
       title: Text(
         "Chọn coupon",
         style: MyTextStyle.textStyle(
@@ -32,7 +31,7 @@ class _AlertSelectCouponState extends State<AlertSelectCoupon> {
       content: ChangeNotifierProvider<CouponViewModel>(
         create: (context) =>
             CouponViewModel(couponRepository: getIt())..fetchCouponList(),
-        child: Container(
+        child: SizedBox(
           width: context.mediaQueryWidth * 0.9,
           height: context.mediaQueryHeight * 0.3,
           child: Consumer<CouponViewModel>(
@@ -49,10 +48,10 @@ class _AlertSelectCouponState extends State<AlertSelectCoupon> {
                         Navigator.pop(context);
                       },
                       child: Container(
-                        margin:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 2),
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 2),
                         child: Container(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 10),
                           decoration: BoxDecoration(
                               color: Colors.white,
@@ -64,12 +63,12 @@ class _AlertSelectCouponState extends State<AlertSelectCoupon> {
                             children: [
                               Row(
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     FontAwesomeIcons.ticket,
                                     size: 16,
                                     color: Colors.green,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 15,
                                   ),
                                   Column(
@@ -87,9 +86,7 @@ class _AlertSelectCouponState extends State<AlertSelectCoupon> {
                                 ],
                               ),
                               Text(
-                                "Giảm " +
-                                    list[index].couponPriceSale.toString() +
-                                    "%",
+                                "Giảm ${list[index].couponPriceSale}%",
                                 style: MyTextStyle.textStyle(
                                     fontSize: 14,
                                     color: Colors.redAccent,
@@ -103,10 +100,8 @@ class _AlertSelectCouponState extends State<AlertSelectCoupon> {
                   },
                 );
               } else {
-                return Container(
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                return const Center(
+                  child: CircularProgressIndicator(),
                 );
               }
             },

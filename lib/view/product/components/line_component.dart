@@ -6,7 +6,7 @@ class LineComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
           border: Border.all(width: 0.5, color: Colors.black.withOpacity(0.2))),
     );

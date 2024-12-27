@@ -27,10 +27,11 @@ class _RoomHotelComponentState extends State<RoomHotelComponent> {
   Widget build(BuildContext context) {
     return Container(
       width: context.mediaQueryWidth,
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      padding: EdgeInsets.symmetric(horizontal: 0, vertical: 15),
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 15),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
+          color: Colors.white,
           border: Border.all(
               width: 0.5, color: const Color.fromARGB(255, 244, 183, 0))),
       child: Column(
@@ -41,13 +42,11 @@ class _RoomHotelComponentState extends State<RoomHotelComponent> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CachedNetworkImage(
-                imageUrl: AppUrl.roomGallery +
-                    AppFunctions.deleteSpaceWhite(widget.roomModel.roomName) +
-                    "/" +
-                    widget.roomModel.galleryRoom.first.galleryRoomImage,
+                imageUrl:
+                    "${AppUrl.roomGallery}${AppFunctions.deleteSpaceWhite(widget.roomModel.roomName)}/${widget.roomModel.galleryRoom.first.galleryRoomImage}",
                 imageBuilder: (context, imageProvider) => Container(
                   width: context.mediaQueryWidth * 0.3,
-                  height: context.mediaQueryHeight * 0.15,
+                  height: context.mediaQueryHeight * 0.13,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     image: DecorationImage(
@@ -56,12 +55,14 @@ class _RoomHotelComponentState extends State<RoomHotelComponent> {
                     ),
                   ),
                 ),
-                placeholder: (context, url) => CircularProgressIndicator(),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+                placeholder: (context, url) =>
+                    const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
               Container(
                 width: context.mediaQueryWidth * 0.5,
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -73,23 +74,25 @@ class _RoomHotelComponentState extends State<RoomHotelComponent> {
                           fontWeight: FontWeight.bold,
                           color: ColorData.myColor),
                     ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Icon(
+                            const Icon(
                               FontAwesomeIcons.userGroup,
                               size: 14,
                               color: Colors.grey,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 8,
                             ),
                             Text(
-                              widget.roomModel.roomAmountOfPeople.toString() +
-                                  " người",
+                              "${widget.roomModel.roomAmountOfPeople} người",
                               style: MyTextStyle.textStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.bold,
@@ -100,16 +103,16 @@ class _RoomHotelComponentState extends State<RoomHotelComponent> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Icon(
+                            const Icon(
                               FontAwesomeIcons.layerGroup,
                               size: 14,
                               color: Colors.grey,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 8,
                             ),
                             Text(
-                              widget.roomModel.roomAcreage.toString() + " m2",
+                              "${widget.roomModel.roomAcreage} m2",
                               style: MyTextStyle.textStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.bold,
@@ -119,7 +122,7 @@ class _RoomHotelComponentState extends State<RoomHotelComponent> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Text(
@@ -134,21 +137,21 @@ class _RoomHotelComponentState extends State<RoomHotelComponent> {
               )
             ],
           ),
-          LineComponent(),
+          const LineComponent(),
           ListView.separated(
               padding: EdgeInsets.zero,
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 RoomTypeModel roomTypeModel = widget.roomModel.roomTypes[index];
                 return Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Loại phòng " + (index + 1).toString(),
+                          "Loại phòng ${index + 1}",
                           style: MyTextStyle.textStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
@@ -157,16 +160,12 @@ class _RoomHotelComponentState extends State<RoomHotelComponent> {
                         widget.roomModel.roomTypes[index].typeRoomCondition == 1
                             ? RichText(
                                 text: TextSpan(
-                                  text: AppFunctions.formatNumber(widget
-                                          .roomModel
-                                          .roomTypes[index]
-                                          .typeRoomPrice) +
-                                      "\$/",
+                                  text:
+                                      "${AppFunctions.formatNumber(widget.roomModel.roomTypes[index].typeRoomPrice)}đ",
                                   children: [
                                     TextSpan(
-                                      text: AppFunctions.calculatePrice(widget
-                                              .roomModel.roomTypes[index]) +
-                                          "\$",
+                                      text:
+                                          "${AppFunctions.calculatePrice(widget.roomModel.roomTypes[index])}đ",
                                       style: MyTextStyle.textStyle(
                                               fontSize: 15,
                                               color: Colors.pinkAccent,
@@ -184,9 +183,7 @@ class _RoomHotelComponentState extends State<RoomHotelComponent> {
                                 ),
                               )
                             : Text(
-                                AppFunctions.calculatePrice(
-                                        widget.roomModel.roomTypes[index]) +
-                                    "\$",
+                                "${AppFunctions.calculatePrice(widget.roomModel.roomTypes[index])}đ",
                                 style: MyTextStyle.textStyle(
                                     fontSize: 15,
                                     color: Colors.pinkAccent,
@@ -194,7 +191,7 @@ class _RoomHotelComponentState extends State<RoomHotelComponent> {
                               ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     Row(
@@ -203,12 +200,12 @@ class _RoomHotelComponentState extends State<RoomHotelComponent> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Icon(
+                            const Icon(
                               FontAwesomeIcons.bed,
                               size: 14,
                               color: Colors.amber,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 8,
                             ),
                             Text(
@@ -236,7 +233,7 @@ class _RoomHotelComponentState extends State<RoomHotelComponent> {
                                 arguments: list);
                           },
                           child: Container(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(4),
@@ -257,7 +254,7 @@ class _RoomHotelComponentState extends State<RoomHotelComponent> {
                 );
               },
               separatorBuilder: (context, index) {
-                return LineComponent();
+                return const LineComponent();
               },
               itemCount: widget.roomModel.roomTypes.length)
         ],

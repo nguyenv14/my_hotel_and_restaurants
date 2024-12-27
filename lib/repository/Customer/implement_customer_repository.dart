@@ -2,7 +2,6 @@ import 'package:my_hotel_and_restaurants/data/network/base_api_services.dart';
 import 'package:my_hotel_and_restaurants/data/network/network_api_services.dart';
 import 'package:my_hotel_and_restaurants/data/response/app_url.dart';
 import 'package:my_hotel_and_restaurants/data/response/dto_object.dart';
-import 'package:my_hotel_and_restaurants/model/customer_model.dart';
 import 'package:my_hotel_and_restaurants/repository/Customer/customer_repository.dart';
 
 class CustomerRepositoryImp implements CustomerRepository {

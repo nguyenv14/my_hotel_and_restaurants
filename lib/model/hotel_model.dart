@@ -1,3 +1,4 @@
+import 'package:my_hotel_and_restaurants/data/response/app_url.dart';
 import 'package:my_hotel_and_restaurants/model/area_model.dart';
 import 'package:my_hotel_and_restaurants/model/brand_model.dart';
 import 'package:my_hotel_and_restaurants/model/evaluate_model.dart';
@@ -51,7 +52,6 @@ class HotelModel {
   });
 
   factory HotelModel.fromJson(Map<String, dynamic> json) {
-    print("hotel7");
     List<dynamic> areaJsonList = json['rooms'] ?? [];
     List<RoomModel> rooms =
         areaJsonList.map((areaJson) => RoomModel.fromJson(areaJson)).toList();
@@ -62,10 +62,8 @@ class HotelModel {
 
     final Map<String, dynamic> areaJson = json['area'] ?? {};
     AreaModel areaModel = AreaModel.fromJson(areaJson);
-    print("hotel6");
     final Map<String, dynamic> brandJson = json['brand'] ?? {};
     BrandModel brandModel = BrandModel.fromJson(brandJson);
-    print("hotel5");
     List<dynamic>? evaluatesJsonList = json['evaluates'];
     List<EvaluateModel> evaluatesList = [];
     if (evaluatesJsonList != null) {
@@ -93,7 +91,7 @@ class HotelModel {
       hotelPlaceDetails: json['hotel_placedetails'],
       hotelLinkPlace: json['hotel_linkplace'],
       hotelJfamePlace: json['hotel_jfameplace'],
-      hotelImage: json['hotel_image'],
+      hotelImage: AppUrl.hotelImage + json['hotel_image'],
       hotelDesc: json['hotel_desc'],
       hotelTagKeyword: json['hotel_tag_keyword'],
       hotelView: json['hotel_view'],

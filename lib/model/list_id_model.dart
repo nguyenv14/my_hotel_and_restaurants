@@ -1,6 +1,7 @@
 class FavouriteModel {
   int customer_id;
   int hotel_id;
+  int? type;
 
   FavouriteModel({required this.customer_id, required this.hotel_id});
 
@@ -12,10 +13,7 @@ class FavouriteModel {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'customer_id': customer_id,
-      'hotel_id': hotel_id,
-    };
+    return {'customer_id': customer_id, 'hotel_id': hotel_id};
   }
 
   static List<dynamic> getListUserFeeJson(List<FavouriteModel> userFees) {
@@ -23,7 +21,7 @@ class FavouriteModel {
     return dynamicList;
   }
 
-  static List<FavouriteModel> getListUser(List<dynamic> dynamicList) {
+  static List<FavouriteModel> getListFavourite(List<dynamic> dynamicList) {
     List<FavouriteModel> userList =
         dynamicList.map((e) => FavouriteModel.fromJson(e)).toList();
     return userList;

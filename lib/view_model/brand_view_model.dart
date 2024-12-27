@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:my_hotel_and_restaurants/data/response/api_response.dart';
 import 'package:my_hotel_and_restaurants/model/brand_model.dart';
-import 'package:my_hotel_and_restaurants/model/coupon_model.dart';
 import 'package:my_hotel_and_restaurants/repository/Brand/brand_repository.dart';
-import 'package:my_hotel_and_restaurants/repository/Coupon/coupon_repository.dart';
 
 class BrandViewModel extends ChangeNotifier {
   BrandRepository brandRepository;
@@ -24,7 +22,9 @@ class BrandViewModel extends ChangeNotifier {
       setBrandListResponse(ApiResponse.completed(areas));
     }).onError((error, stackTrace) {
       // print("hihi");
-      print(error.toString());
+      if (kDebugMode) {
+        print(error.toString());
+      }
       setBrandListResponse(ApiResponse.error(error.toString()));
     });
   }

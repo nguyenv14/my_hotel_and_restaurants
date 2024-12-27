@@ -10,7 +10,6 @@ class PaymentModel {
   });
 
   factory PaymentModel.fromJson(Map<String, dynamic> json) {
-    print("Payment");
     return PaymentModel(
       paymentId: json['payment_id'],
       paymentMethod: json['payment_method'],

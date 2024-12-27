@@ -1,20 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:my_hotel_and_restaurants/configs/routes/routes_name.dart';
+import 'package:my_hotel_and_restaurants/model/customer_menu_item.dart';
+import 'package:my_hotel_and_restaurants/model/customer_model.dart';
 import 'package:my_hotel_and_restaurants/model/hotel_model.dart';
+import 'package:my_hotel_and_restaurants/model/menu_restaurant_model.dart';
 import 'package:my_hotel_and_restaurants/model/order_model.dart';
+import 'package:my_hotel_and_restaurants/model/restaurant_model.dart';
 import 'package:my_hotel_and_restaurants/model/room_model.dart';
 import 'package:my_hotel_and_restaurants/model/type_room_model.dart';
 import 'package:my_hotel_and_restaurants/view/checkout_hotel/checkout_page.dart';
+import 'package:my_hotel_and_restaurants/view/checkout_hotel/order_restaurant/checkout_page.dart';
+import 'package:my_hotel_and_restaurants/view/checkout_hotel/order_restaurant/order_page.dart';
+import 'package:my_hotel_and_restaurants/view/checkout_hotel/order_restaurant/receipt_page.dart';
 import 'package:my_hotel_and_restaurants/view/checkout_hotel/receipt_page.dart';
 import 'package:my_hotel_and_restaurants/view/checkout_hotel/select_room_hotel.dart';
+import 'package:my_hotel_and_restaurants/view/favourite/favourite_page.dart';
 import 'package:my_hotel_and_restaurants/view/home/simple_map.dart';
 import 'package:my_hotel_and_restaurants/view/login/login_screen.dart';
 import 'package:my_hotel_and_restaurants/view/login/register/register_screen.dart';
 import 'package:my_hotel_and_restaurants/view/main_screen.dart';
+import 'package:my_hotel_and_restaurants/view/my_order_restaurant/order_restaurant_detail.dart';
 import 'package:my_hotel_and_restaurants/view/myorder/order_detail.dart';
 import 'package:my_hotel_and_restaurants/view/product/detail_product.dart';
 import 'package:my_hotel_and_restaurants/view/profile/profile_page.dart';
 import 'package:my_hotel_and_restaurants/view/profile/update_user_page.dart';
+import 'package:my_hotel_and_restaurants/view/restaurants/restaurant_detail_screen.dart';
 import 'package:my_hotel_and_restaurants/view/search/search_screen.dart';
 import 'package:my_hotel_and_restaurants/view/splash/splash_screen.dart';
 
@@ -47,67 +57,101 @@ class Routes {
       case RoutesName.orderDetail:
         OrderModel orderModel = (settings.arguments as OrderModel);
         return MaterialPageRoute(
-            builder: (context) => new OrderDetailPage(orderModel: orderModel));
+            builder: (context) => OrderDetailPage(orderModel: orderModel));
+      case RoutesName.orderRestaurantDetail:
+        OrderModel orderModel = (settings.arguments as OrderModel);
+        return MaterialPageRoute(
+            builder: (context) =>
+                OrderRestaurantDetail(orderModel: orderModel));
       case RoutesName.receiptPage:
         Map<String, dynamic> args = settings.arguments as Map<String, dynamic>;
-        if (args != null) {
-          OrderModel orderModel = args['orderModel'] as OrderModel;
-          int days = args['days'] as int;
-          return MaterialPageRoute(
-            builder: (context) => ReceiptPage(
-              orderModel: orderModel,
-              days: days,
-            ),
-          );
-        } else {
-          return MaterialPageRoute(
-            builder: (_) => const Scaffold(
-              body: Center(
-                child: Text("Hotel model is null"),
-              ),
-            ),
-          );
-        }
+        OrderModel orderModel = args['orderModel'] as OrderModel;
+        int days = args['days'] as int;
+        return MaterialPageRoute(
+          builder: (context) => ReceiptPage(
+            orderModel: orderModel,
+            days: days,
+          ),
+        );
       case RoutesName.checkOutPage:
         Map<String, dynamic> args = settings.arguments as Map<String, dynamic>;
-        if (args != null) {
-          HotelModel hotelModel = args['hotel'] as HotelModel;
-          RoomModel roomModel = args['room'] as RoomModel;
-          RoomTypeModel roomTypeModel = args['roomType'] as RoomTypeModel;
-          return MaterialPageRoute(
-            builder: (context) => CheckoutPage(
-              hotelModel: hotelModel,
-              roomModel: roomModel,
-              roomTypeModel: roomTypeModel,
-            ),
-          );
-        } else {
-          return MaterialPageRoute(
-            builder: (_) => const Scaffold(
-              body: Center(
-                child: Text("Hotel model is null"),
-              ),
-            ),
-          );
-        }
+        HotelModel hotelModel = args['hotel'] as HotelModel;
+        RoomModel roomModel = args['room'] as RoomModel;
+        RoomTypeModel roomTypeModel = args['roomType'] as RoomTypeModel;
+        return MaterialPageRoute(
+          builder: (context) => CheckoutPage(
+            hotelModel: hotelModel,
+            roomModel: roomModel,
+            roomTypeModel: roomTypeModel,
+          ),
+        );
 
       case RoutesName.profilePage:
-        return MaterialPageRoute(builder: (context) => ProfilePage());
+        return MaterialPageRoute(builder: (context) => const ProfilePage());
       case RoutesName.updateUserPage:
         return MaterialPageRoute(
-          builder: (context) => UpdateUserPage(),
+          builder: (context) => const UpdateUserPage(),
         );
       case RoutesName.registerPage:
         return MaterialPageRoute(
-          builder: (context) => RegisterScreen(),
+          builder: (context) => const RegisterScreen(),
         );
       case RoutesName.searchPage:
         return MaterialPageRoute(
-          builder: (context) => SearchScreen(),
+          builder: (context) => const SearchScreen(),
+        );
+      case RoutesName.favouritePage:
+        return MaterialPageRoute(
+          builder: (context) => const FavouritePage(),
         );
       case RoutesName.test:
         return MaterialPageRoute(
-          builder: (context) => SimpleMap(),
+          builder: (context) => const SimpleMap(),
+        );
+      case RoutesName.detailRestaurant:
+        final int restaurantId = (settings.arguments as int);
+        return restaurantId != 0
+            ? generateDetailRestaurantRoute(restaurantId)
+            : MaterialPageRoute(
+                builder: (_) => const Scaffold(
+                  body: Center(
+                    child: Text("Restaurant model is null"),
+                  ),
+                ),
+              );
+      case RoutesName.orderRestaurant:
+        Map<String, dynamic> args = settings.arguments as Map<String, dynamic>;
+        RestaurantModel restaurantModel = args['restaurant'] as RestaurantModel;
+        List<MenuModel> menuModel = args['menus'] as List<MenuModel>;
+        DateTime date = args['date'] as DateTime;
+        int quantity = args['person'] as int;
+        return MaterialPageRoute(
+          builder: (context) => OrderRestaurantPage(
+            restaurantModel: restaurantModel,
+            menuList: menuModel,
+            date: date,
+            person: quantity,
+          ),
+        );
+      case RoutesName.receiptRestaurantPage:
+        return MaterialPageRoute(
+          builder: (context) => const ReceiptRestaurantPage(),
+        );
+      case RoutesName.paymentRestaurant:
+        Map<String, dynamic> args = settings.arguments as Map<String, dynamic>;
+        RestaurantModel restaurantModel = args['restaurant'] as RestaurantModel;
+        List<CustomerOrderItem> menuModel =
+            args['menus'] as List<CustomerOrderItem>;
+        DateTime date = args['date'] as DateTime;
+        int quantity = args['person'] as int;
+        CustomerModel customerModel = args['customer'] as CustomerModel;
+        return MaterialPageRoute(
+          builder: (context) => CheckInRestaurantPage(
+              customerModel: customerModel,
+              date: date,
+              menuList: menuModel,
+              personQuantity: quantity,
+              restaurantModel: restaurantModel),
         );
       default:
         return MaterialPageRoute(builder: (_) {
@@ -123,6 +167,14 @@ class Routes {
   static Route<dynamic> generateDetailHotelRoute(int hotelId) {
     return MaterialPageRoute(
       builder: (context) => DetailProductScreen(hotel_id: hotelId),
+    );
+  }
+
+  static Route<dynamic> generateDetailRestaurantRoute(int restaurantId) {
+    return MaterialPageRoute(
+      builder: (context) => RestaurantDetailScreen(
+        restaurantId: restaurantId,
+      ),
     );
   }
 }

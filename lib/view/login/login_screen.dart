@@ -1,15 +1,11 @@
 import 'package:cherry_toast/cherry_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_hotel_and_restaurants/configs/color.dart';
 import 'package:my_hotel_and_restaurants/configs/extensions.dart';
 import 'package:my_hotel_and_restaurants/configs/routes/routes_name.dart';
-import 'package:my_hotel_and_restaurants/model/customer_model.dart';
-import 'package:my_hotel_and_restaurants/utils/user_db.dart';
 import 'package:my_hotel_and_restaurants/view/login/components/InputFieldComponet.dart';
-import 'package:my_hotel_and_restaurants/view_model/customer_view_model.dart';
 import 'package:my_hotel_and_restaurants/view_model/login/login_view_model.dart';
 import 'package:provider/provider.dart';
 

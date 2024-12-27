@@ -1,14 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobkit_dashed_border/mobkit_dashed_border.dart';
+import 'package:my_hotel_and_restaurants/configs/color.dart';
 import 'package:my_hotel_and_restaurants/configs/extensions.dart';
 import 'package:my_hotel_and_restaurants/configs/text_style.dart';
 import 'package:my_hotel_and_restaurants/data/response/app_url.dart';
 import 'package:my_hotel_and_restaurants/model/order_model.dart';
 import 'package:my_hotel_and_restaurants/utils/app_functions.dart';
+import 'package:my_hotel_and_restaurants/view/components/button_leading_component.dart';
 import 'package:my_hotel_and_restaurants/view/product/components/line_component.dart';
 
 class OrderDetailPage extends StatefulWidget {
@@ -23,30 +23,36 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(243, 250, 249, 1),
+      backgroundColor: ColorData.backgroundColor.withOpacity(0.98),
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey,
-        title: Text(
-          "Order Room Detail",
-          style: MyTextStyle.textStyle(fontSize: 20, color: Colors.white),
-        ),
-        leading: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Icon(
-            FontAwesomeIcons.chevronLeft,
-            color: Colors.white,
-            size: 18,
-          ),
+        backgroundColor: ColorData.backgroundColor,
+        shadowColor: ColorData.backgroundColor,
+        surfaceTintColor: ColorData.backgroundColor,
+        scrolledUnderElevation: 0,
+        automaticallyImplyLeading: false,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const ButtonLeadingComponent(
+              iconData: Icons.arrow_back_ios_new_rounded,
+            ),
+            Text(
+              "Order Detail",
+              style: MyTextStyle.textStyle(
+                  fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              width: 50,
+            ),
+          ],
         ),
       ),
       body: SingleChildScrollView(
-        physics: AlwaysScrollableScrollPhysics(),
+        physics: const AlwaysScrollableScrollPhysics(),
         child: Column(children: [
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: Colors.white,
@@ -58,11 +64,10 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CachedNetworkImage(
-                      imageUrl: AppUrl.hotelImage +
-                          widget.orderModel.orderDetailsModel.hotelModel
-                              .hotelImage,
+                      imageUrl: widget
+                          .orderModel.orderDetailsModel!.hotelModel.hotelImage,
                       imageBuilder: (context, imageProvider) => Container(
-                        width: context.mediaQueryWidth * 0.18,
+                        width: context.mediaQueryWidth * 0.2,
                         height: context.mediaQueryHeight * 0.08,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -73,31 +78,39 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                         ),
                       ),
                       placeholder: (context, url) =>
-                          CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
+                          const CircularProgressIndicator(),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text(
-                          widget.orderModel.orderDetailsModel.hotelName,
+                          widget.orderModel.orderDetailsModel!.hotelName,
                           style: MyTextStyle.textStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
-                              color: Colors.blueGrey),
+                              color: ColorData.myColor),
                         ),
-                        Text(
-                          "131, Tran Du, Da Nang",
-                          style: MyTextStyle.textStyle(
-                              fontSize: 12, color: Colors.grey),
+                        SizedBox(
+                          width: 200,
+                          child: Text(
+                            widget.orderModel.orderDetailsModel!.hotelModel
+                                .hotelPlaceDetails,
+                            softWrap: true,
+                            maxLines: 3,
+                            textAlign: TextAlign.right,
+                            style: MyTextStyle.textStyle(
+                                fontSize: 12, color: Colors.grey),
+                          ),
                         )
                       ],
                     ),
                   ],
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 15),
+                  margin: const EdgeInsets.symmetric(vertical: 15),
                   decoration: BoxDecoration(
                       border: Border.all(
                           width: 0.5, color: Colors.black.withOpacity(0.2))),
@@ -125,25 +138,25 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       ],
                     ),
                     Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(color: Colors.grey, width: 0.5)),
                       child: Row(
                         children: [
-                          Icon(
+                          const Icon(
                             FontAwesomeIcons.solidMoon,
-                            color: Colors.blueAccent,
+                            color: ColorData.myColor,
                           ),
                           Text(
                             AppFunctions.differenceTwoDay(
                                     widget.orderModel.startDay,
-                                    widget.orderModel.endDay)
+                                    widget.orderModel.endDay!)
                                 .toString(),
                             style: MyTextStyle.textStyle(
                                 fontSize: 16,
-                                color: Colors.blueAccent,
+                                color: ColorData.myColor,
                                 fontWeight: FontWeight.bold),
                           ),
                         ],
@@ -160,7 +173,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                               color: Colors.grey),
                         ),
                         Text(
-                          widget.orderModel.endDay,
+                          widget.orderModel.endDay!,
                           style: MyTextStyle.textStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
@@ -171,7 +184,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   ],
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 15),
+                  margin: const EdgeInsets.symmetric(vertical: 15),
                   decoration: BoxDecoration(
                       border: Border.all(
                           width: 0.5, color: Colors.black.withOpacity(0.2))),
@@ -180,18 +193,18 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      widget.orderModel.orderDetailsModel.roomModel.roomName,
+                      MyTextStyle.truncateString(
+                          widget
+                              .orderModel.orderDetailsModel!.roomModel.roomName,
+                          30),
                       style: MyTextStyle.textStyle(
                           fontSize: 13,
                           color: Colors.black,
                           fontWeight: FontWeight.bold),
                     ),
                     CachedNetworkImage(
-                      imageUrl: AppUrl.roomGallery +
-                          AppFunctions.deleteSpaceWhite(widget.orderModel
-                              .orderDetailsModel.roomModel.roomName) +
-                          "/" +
-                          widget.orderModel.orderDetailsModel.roomImage,
+                      imageUrl:
+                          "${AppUrl.roomGallery}${AppFunctions.deleteSpaceWhite(widget.orderModel.orderDetailsModel!.roomModel.roomName)}/${widget.orderModel.orderDetailsModel!.roomImage}",
                       imageBuilder: (context, imageProvider) => Container(
                         width: context.mediaQueryWidth * 0.14,
                         height: context.mediaQueryHeight * 0.06,
@@ -204,12 +217,13 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                         ),
                       ),
                       placeholder: (context, url) =>
-                          CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
+                          const CircularProgressIndicator(),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Row(
@@ -220,7 +234,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       children: [
                         itemOptionOrderHotel(
                             FontAwesomeIcons.utensils, "Breakfast included"),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         itemOptionOrderHotel(
@@ -231,7 +245,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         itemOptionOrderHotel(FontAwesomeIcons.bed, "Twin bed"),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         itemOptionOrderHotel(
@@ -241,7 +255,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   ],
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 15),
+                  margin: const EdgeInsets.symmetric(vertical: 15),
                   decoration: BoxDecoration(
                       border: Border.all(
                           width: 0.5, color: Colors.black.withOpacity(0.2))),
@@ -261,8 +275,9 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       color: Colors.blueGrey),
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                   decoration: BoxDecoration(
                       border: DashedBorder.symmetric(
                     horizontal:
@@ -274,24 +289,24 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
-                        padding: EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(color: Colors.black, width: 1)),
-                        child: Icon(FontAwesomeIcons.solidUser)),
-                    SizedBox(
+                        child: const Icon(FontAwesomeIcons.solidUser)),
+                    const SizedBox(
                       width: 10,
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.orderModel.ordererModel.ordererName,
+                          widget.orderModel.ordererModel!.ordererName!,
                           style: MyTextStyle.textStyle(
                               fontSize: 14, color: Colors.blueAccent),
                         ),
                         Text(
-                          widget.orderModel.ordererModel.ordererEmail,
+                          widget.orderModel.ordererModel!.ordererEmail!,
                           style: MyTextStyle.textStyle(
                               fontSize: 14, color: Colors.black),
                         ),
@@ -303,49 +318,44 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 20),
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(10)),
             child: Column(
               children: [
                 Text(
-                  "Order code: " + widget.orderModel.orderCode,
+                  "Order code: ${widget.orderModel.orderCode!}",
                   style:
                       MyTextStyle.textStyle(fontSize: 13, color: Colors.grey),
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 15),
+                  margin: const EdgeInsets.symmetric(vertical: 15),
                   decoration: BoxDecoration(
                       border: Border.all(
                           width: 0.5, color: Colors.black.withOpacity(0.2))),
                 ),
                 itemPriceOrder(
-                    "1 phòng x " +
-                        AppFunctions.differenceTwoDay(
-                                widget.orderModel.startDay,
-                                widget.orderModel.endDay)
-                            .toString() +
-                        " ngày",
-                    (widget.orderModel.orderDetailsModel.priceRoom -
-                            widget.orderModel.orderDetailsModel.hotelFee +
-                            widget.orderModel.couponSalePrice)
+                    "1 phòng x ${AppFunctions.differenceTwoDay(widget.orderModel.startDay, widget.orderModel.endDay!)} ngày",
+                    (widget.orderModel.orderDetailsModel!.priceRoom -
+                            widget.orderModel.orderDetailsModel!.hotelFee +
+                            widget.orderModel.couponSalePrice!)
                         .toDouble()),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 itemPriceOrder("Phí khách sạn",
-                    widget.orderModel.orderDetailsModel.hotelFee.toDouble()),
-                LineComponent(),
+                    widget.orderModel.orderDetailsModel!.hotelFee.toDouble()),
+                const LineComponent(),
                 itemPriceOrder(
                     "Tổng giá phòng",
-                    (widget.orderModel.orderDetailsModel.priceRoom +
-                            widget.orderModel.couponSalePrice)
+                    (widget.orderModel.orderDetailsModel!.priceRoom +
+                            widget.orderModel.couponSalePrice!)
                         .toDouble()),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
-                widget.orderModel.couponSalePrice.toDouble() > 0
+                widget.orderModel.couponSalePrice!.toDouble() > 0
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -355,11 +365,11 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                 "Mã giảm giá",
                                 style: MyTextStyle.textStyle(fontSize: 12),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 5,
                               ),
                               Container(
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                       horizontal: 5, vertical: 2),
                                   decoration: BoxDecoration(
                                       border: Border.all(color: Colors.red)),
@@ -371,10 +381,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                             ],
                           ),
                           Text(
-                            "-" +
-                                AppFunctions.formatNumber(widget
-                                    .orderModel.couponSalePrice
-                                    .toDouble()),
+                            "-${AppFunctions.formatNumber(widget.orderModel.couponSalePrice!.toDouble())}",
                             style: MyTextStyle.textStyle(
                                 fontSize: 12, color: Colors.green),
                           ),
@@ -382,18 +389,18 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       )
                     : Container(),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 15),
+                  margin: const EdgeInsets.symmetric(vertical: 15),
                   decoration: BoxDecoration(
                       border: Border.all(
                           width: 0.5, color: Colors.black.withOpacity(0.2))),
                 ),
                 itemPriceOrder("Tổng tiền thanh toán",
-                    (widget.orderModel.orderDetailsModel.priceRoom).toDouble(),
-                    fontWeight: FontWeight.bold),
+                    (widget.orderModel.orderDetailsModel!.priceRoom).toDouble(),
+                    fontWeight: FontWeight.bold, color: ColorData.myColor),
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
         ]),
@@ -412,7 +419,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           size: 12,
           color: Colors.amber,
         ),
-        SizedBox(
+        const SizedBox(
           width: 5,
         ),
         Text(
@@ -424,7 +431,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   }
 
   Widget itemPriceOrder(String text, double price,
-      {FontWeight fontWeight = FontWeight.normal}) {
+      {FontWeight fontWeight = FontWeight.normal, Color color = Colors.black}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -433,8 +440,9 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           style: MyTextStyle.textStyle(fontSize: 12, fontWeight: fontWeight),
         ),
         Text(
-          AppFunctions.formatNumber(price) + "đ",
-          style: MyTextStyle.textStyle(fontSize: 12, fontWeight: fontWeight),
+          "${AppFunctions.formatNumber(price)}đ",
+          style: MyTextStyle.textStyle(
+              fontSize: 12, fontWeight: fontWeight, color: color),
         )
       ],
     );

@@ -7,7 +7,6 @@ import 'package:my_hotel_and_restaurants/repository/Brand/brand_repository.dart'
 class BrandRepositoryImp implements BrandRepository {
   final BaseApiServices _apiServices = NetworkApiService();
 
-  @override
   Future<ObjectDTO> updateUser(Map<Object?, Object> data) async {
     try {
       ObjectDTO objectDTO =

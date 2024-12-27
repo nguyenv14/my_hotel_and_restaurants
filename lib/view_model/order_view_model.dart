@@ -1,17 +1,29 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:my_hotel_and_restaurants/data/response/api_response.dart';
+import 'package:my_hotel_and_restaurants/model/customer_menu_item.dart';
+import 'package:my_hotel_and_restaurants/model/customer_model.dart';
 import 'package:my_hotel_and_restaurants/model/order_model.dart';
 import 'package:my_hotel_and_restaurants/repository/Order/order_repository.dart';
+import 'package:my_hotel_and_restaurants/utils/user_db.dart';
 
 class OrderViewModel extends ChangeNotifier {
   OrderRepository orderRepository;
   OrderViewModel({required this.orderRepository});
   bool isCheckOut = false;
+  bool isCheckOutRestaurant = false;
   ApiResponse<OrderModel> orderModelResponse = ApiResponse.loading();
   ApiResponse<List<OrderModel>> orderListByStatus = ApiResponse.loading();
+  ApiResponse<List<OrderModel>> orderRestaurantListByStatus =
+      ApiResponse.loading();
+  ApiResponse<OrderModel> orderRestaurantResponse = ApiResponse.loading();
 
   setOrderListByStatus(ApiResponse<List<OrderModel>> response) {
     orderListByStatus = response;
+    notifyListeners();
+  }
+
+  setOrderRestaurantListByStatus(ApiResponse<List<OrderModel>> response) {
+    orderRestaurantListByStatus = response;
     notifyListeners();
   }
 
@@ -20,16 +32,24 @@ class OrderViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  setOrderRestaurantModelResponse(ApiResponse<OrderModel> apiResponse) {
+    orderRestaurantResponse = apiResponse;
+    notifyListeners();
+  }
+
   setCheckOut(bool check) {
     isCheckOut = check;
     notifyListeners();
   }
 
-  Future fetchOrderListByStatus(int customer_id, int order_status) async {
+  setCheckoutRestaurant(bool check) {
+    isCheckOutRestaurant = check;
+    notifyListeners();
+  }
+
+  Future fetchOrderListByStatus(int customerId, int orderStatus) async {
     setOrderListByStatus(ApiResponse.loading());
-    orderRepository
-        .getListOrderByStatus(customer_id, order_status)
-        .then((value) {
+    orderRepository.getListOrderByStatus(customerId, orderStatus).then((value) {
       if (value.statusCode == 200) {
         List<dynamic> dt = value.data;
         List<OrderModel> orders = OrderModel.getListOrder(dt);
@@ -42,12 +62,31 @@ class OrderViewModel extends ChangeNotifier {
     });
   }
 
-  Future cancelOrderByCustomerId(int customer_id, int order_id) async {
+  Future fetchOrderRestaurantListByStatus(
+      int customerId, int orderStatus) async {
+    setOrderRestaurantListByStatus(ApiResponse.loading());
+    orderRepository
+        .getListOrderRestaurantByStatus(customerId, orderStatus)
+        .then((value) {
+      if (value.statusCode == 200) {
+        List<dynamic> dt = value.data;
+        List<OrderModel> orders = OrderModel.getListOrder(dt);
+        setOrderRestaurantListByStatus(ApiResponse.completed(orders));
+      } else {
+        setOrderRestaurantListByStatus(ApiResponse.error("completed"));
+      }
+    }).onError((error, stackTrace) {
+      setOrderRestaurantListByStatus(ApiResponse.error(error.toString()));
+    });
+  }
+
+  Future cancelOrderByCustomerId(int customerId, int orderId) async {
     setOrderListByStatus(ApiResponse.loading());
     var body = {
-      "customer_id": customer_id.toString(),
-      "order_id": order_id.toString()
+      "customer_id": customerId.toString(),
+      "order_id": orderId.toString()
     };
+    print(body.toString());
     orderRepository.cancelOrderByCustomer(body).then((value) {
       if (value.statusCode == 200) {
         List<dynamic> dt = value.data;
@@ -62,10 +101,10 @@ class OrderViewModel extends ChangeNotifier {
   }
 
   Future sendCommentToOrder(
-      int customer_id,
-      int order_id,
-      int hotel_id,
-      int room_id,
+      int customerId,
+      int orderId,
+      int hotelId,
+      int roomId,
       int typeRoomId,
       String content,
       int price,
@@ -75,10 +114,10 @@ class OrderViewModel extends ChangeNotifier {
       int convenient) async {
     setOrderListByStatus(ApiResponse.loading());
     var body = {
-      "customer_id": customer_id.toString(),
-      "order_id": order_id.toString(),
-      "hotel_id": hotel_id.toString(),
-      "room_id": room_id.toString(),
+      "customer_id": customerId.toString(),
+      "order_id": orderId.toString(),
+      "hotel_id": hotelId.toString(),
+      "room_id": roomId.toString(),
       "type_room_id": typeRoomId.toString(),
       "evaluate_content": content.toString(),
       "evaluate_loaction_point": position.toString(),
@@ -101,45 +140,103 @@ class OrderViewModel extends ChangeNotifier {
   }
 
   Future checkOut(
-      int customer_id,
-      int type_room_idm,
+      int customerId,
+      int typeRoomIdm,
       String startDay,
       String endDay,
-      String order_code,
-      String require_text,
-      int order_require,
-      int coupon_id,
+      String orderCode,
+      String requireText,
+      int orderRequire,
+      int couponId,
       int day) async {
     var body = {
-      "customer_id": customer_id.toString(),
-      "type_room_id": type_room_idm.toString(),
+      "customer_id": customerId.toString(),
+      "type_room_id": typeRoomIdm.toString(),
       "startDay": startDay,
       "endDay": endDay,
-      "order_code": order_code,
-      "require_text": require_text,
-      "order_require": order_require.toString(),
-      "coupon_id": coupon_id.toString(),
+      "order_code": orderCode,
+      "require_text": requireText,
+      "order_require": orderRequire.toString(),
+      "coupon_id": couponId.toString(),
       "day": day.toString(),
     };
+    print(body.toString());
     setCheckOut(true);
     orderRepository.checkout(body).then((value) {
       if (value.statusCode == 200) {
         List<dynamic> data = value.data;
         if (data.isNotEmpty) {
-          // Lấy phần tử đầu tiên từ danh sách và chuyển đổi nó thành một đối tượng OrderModel
           OrderModel order = OrderModel.fromJson(data.first);
           setOrderModelResponse(ApiResponse.completed(order));
         } else {
-          // Xử lý trường hợp không có dữ liệu trả về
           setOrderModelResponse(ApiResponse.error("No data returned"));
         }
       }
-      // setCheckOut(false);
-      // setOrderModelResponse(ApiResponse.loading());
     }).onError((error, stackTrace) {
       setCheckOut(false);
       print(error.toString());
       setOrderModelResponse(ApiResponse.error(error.toString()));
+    });
+  }
+
+  Future checkOutRestaurant(CustomerModel customer, String date,
+      List<CustomerOrderItem> menuList, int restaurantId, int person) async {
+    var body = {
+      'customer': {
+        'customer_id': CustomerDB.getCustomer()!.customer_id!,
+        'customer_name': customer.customer_name,
+        'customer_phone': customer.customer_phone,
+        'customer_email': customer.customer_email,
+        'customer_note': customer.customer_note,
+      },
+      'date': date,
+      'menuList': menuList
+          .map((item) => {
+                'menu_item_id': item.menuItem.menuItemId,
+                'quantity': item.quantity,
+              })
+          .toList(),
+      'restaurant_id': restaurantId,
+      'person': person,
+      'payment': 4,
+    };
+    setCheckoutRestaurant(true);
+    orderRepository.checkoutRestaurant(body).then((value) {
+      if (value.statusCode == 200) {
+        OrderModel order = OrderModel.fromJson(value.data);
+        if (!order.orderId.isNaN) {
+          // print(orde);
+          setOrderRestaurantModelResponse(ApiResponse.completed(order));
+        } else {
+          setOrderRestaurantModelResponse(
+              ApiResponse.error("No data returned"));
+        }
+      }
+    }).onError((error, stackTrace) {
+      setCheckoutRestaurant(false);
+      if (kDebugMode) {
+        print(error.toString());
+      }
+      setOrderRestaurantModelResponse(ApiResponse.error(error.toString()));
+    });
+  }
+
+  Future cancelOrderRestaurantByCustomerId(int customerId, int orderId) async {
+    setOrderRestaurantListByStatus(ApiResponse.loading());
+    var body = {
+      "customer_id": customerId.toString(),
+      "order_id": orderId.toString()
+    };
+    orderRepository.cancelOrderRestaurantByCustomer(body).then((value) {
+      if (value.statusCode == 200) {
+        List<dynamic> dt = value.data;
+        List<OrderModel> orders = OrderModel.getListOrder(dt);
+        setOrderRestaurantListByStatus(ApiResponse.completed(orders));
+      } else {
+        setOrderRestaurantListByStatus(ApiResponse.error("completed"));
+      }
+    }).onError((error, stackTrace) {
+      setOrderRestaurantListByStatus(ApiResponse.error(error.toString()));
     });
   }
 }

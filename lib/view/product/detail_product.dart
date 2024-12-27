@@ -1,43 +1,36 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:my_hotel_and_restaurants/configs/color.dart';
 import 'package:my_hotel_and_restaurants/configs/extensions.dart';
 import 'package:my_hotel_and_restaurants/configs/routes/routes_name.dart';
 import 'package:my_hotel_and_restaurants/configs/text_style.dart';
-import 'package:my_hotel_and_restaurants/data/response/app_url.dart';
 import 'package:my_hotel_and_restaurants/data/response/status.dart';
 import 'package:my_hotel_and_restaurants/main.dart';
-import 'package:my_hotel_and_restaurants/model/gallery_hotel_model.dart';
 import 'package:my_hotel_and_restaurants/model/hotel_model.dart';
 import 'package:my_hotel_and_restaurants/utils/app_functions.dart';
+import 'package:my_hotel_and_restaurants/view/components/button_leading_component.dart';
+import 'package:my_hotel_and_restaurants/view/components/list_image_hotel_component.dart';
 import 'package:my_hotel_and_restaurants/view/product/components/info_hotel_component.dart';
-import 'package:my_hotel_and_restaurants/view/product/components/list_image_hotel.dart';
 import 'package:my_hotel_and_restaurants/view/product/components/reviews_component.dart';
-import 'package:my_hotel_and_restaurants/view/product/components/video_component.dart';
 import 'package:my_hotel_and_restaurants/view/product/mapScreen.dart';
 import 'package:my_hotel_and_restaurants/view_model/hotel_view_model.dart';
 import 'package:provider/provider.dart';
 
 class DetailProductScreen extends StatefulWidget {
   int hotel_id;
-  DetailProductScreen({required this.hotel_id});
+  DetailProductScreen({super.key, required this.hotel_id});
 
   @override
   State<DetailProductScreen> createState() => _DetailProductScreenState();
 }
 
 class _DetailProductScreenState extends State<DetailProductScreen> {
-  static final LatLng _kMapCenter =
-      LatLng(19.018255973653343, 72.84793849278007);
+  // static final LatLng _kMapCenter =
+  //     LatLng(19.018255973653343, 72.84793849278007);
 
-  static final CameraPosition _kInitialPosition =
-      CameraPosition(target: _kMapCenter, zoom: 11.0, tilt: 0, bearing: 0);
+  // static final CameraPosition _kInitialPosition =
+  //     CameraPosition(target: _kMapCenter, zoom: 11.0, tilt: 0, bearing: 0);
   int indexCurrentGallery = 0;
   @override
   void initState() {
@@ -47,7 +40,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: null,
+      backgroundColor: ColorData.backgroundColor,
       body: ChangeNotifierProvider<HotelViewModel>(
         create: (context) => HotelViewModel(hotelRepository: getIt())
           ..fetchHotelById(widget.hotel_id),
@@ -56,178 +49,115 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
             switch (hotelViewModel.hotelModelDetail.status) {
               case Status.completed:
                 HotelModel hotelModel = hotelViewModel.hotelModelDetail.data!;
-                List<GalleryHotelModel> galleryHotelModel = hotelModel
-                    .galleryHotel
-                    .where((item) => item.galleryHotelType != 2)
-                    .toList();
-                GalleryHotelModel galleryVideo = hotelModel.galleryHotel
-                    .where((element) => element.galleryHotelType == 2)
-                    .first;
                 List<double> listLatLong =
                     AppFunctions.searchLatAndLongMap(hotelModel.hotelLinkPlace);
                 return Scaffold(
+                  backgroundColor: ColorData.backgroundColor,
+                  appBar: AppBar(
+                    backgroundColor: ColorData.backgroundColor,
+                    shadowColor: ColorData.backgroundColor,
+                    surfaceTintColor: ColorData.backgroundColor,
+                    scrolledUnderElevation: 0,
+                    automaticallyImplyLeading: false,
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const ButtonLeadingComponent(
+                          iconData: Icons.arrow_back_ios_new_rounded,
+                        ),
+                        Text(
+                          "Hotel Detail",
+                          style: MyTextStyle.textStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold),
+                        ),
+                        ButtonLeadingComponent(
+                          iconData: Icons.menu,
+                          onPress: () {},
+                        )
+                      ],
+                    ),
+                  ),
                   body: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Stack(
-                          children: [
-                            Container(
-                              width: context.mediaQueryWidth,
-                              height: context.mediaQueryHeight * 0.5,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: NetworkImage(AppUrl.hotelGallery +
-                                          AppFunctions.deleteSpaceWhite(
-                                              hotelModel.hotelName) +
-                                          "/" +
-                                          galleryHotelModel[indexCurrentGallery]
-                                              .galleryHotelImage))),
-                            ),
-                            Positioned(
-                                top: context.mediaQueryHeight * 0.1,
-                                left: 20,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.pop(context, 1);
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.all(12),
-                                    decoration: BoxDecoration(
-                                        color: Colors.black.withOpacity(0.4),
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    child: Icon(
-                                      FontAwesomeIcons.chevronLeft,
-                                      color: Colors.white,
-                                      size: 12,
-                                    ),
-                                  ),
-                                )),
-                            Positioned(
-                                top: context.mediaQueryHeight * 0.1,
-                                right: 20,
-                                child: GestureDetector(
-                                  child: Container(
-                                    padding: EdgeInsets.all(12),
-                                    decoration: BoxDecoration(
-                                        color: Colors.black.withOpacity(0.4),
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    child: Icon(
-                                      FontAwesomeIcons.shareNodes,
-                                      color: Colors.white,
-                                      size: 12,
-                                    ),
-                                  ),
-                                )),
-                            Positioned(
-                              right: 5,
-                              bottom: 10,
-                              left: 5,
-                              child: SizedBox(
-                                height: 80,
-                                child: ListView.separated(
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    physics:
-                                        const AlwaysScrollableScrollPhysics(),
-                                    itemBuilder: (context, index) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            indexCurrentGallery = index;
-                                          });
-                                        },
-                                        child: ListImageSlider(
-                                          imagePath: AppUrl.hotelGallery +
-                                              AppFunctions.deleteSpaceWhite(
-                                                  hotelModel.hotelName) +
-                                              "/" +
-                                              galleryHotelModel[index]
-                                                  .galleryHotelImage,
-                                        ),
-                                      );
-                                    },
-                                    separatorBuilder: (context, index) =>
-                                        SizedBox(
-                                          width: 12,
-                                        ),
-                                    itemCount: galleryHotelModel.length),
-                              ),
-                            ),
-                          ],
-                        ),
-                        InfoHotelComponent(
+                        ListImageHotelComponent(
                           hotelModel: hotelModel,
                         ),
-                        VideoComponent(
-                          videoPath: AppUrl.hotelGallery +
-                              AppFunctions.deleteSpaceWhite(
-                                  hotelModel.hotelName) +
-                              "/" +
-                              galleryVideo.galleryHotelImage,
-                        ),
-                        SizedBox(
-                          height: 20,
+                        const SizedBox(
+                          height: 10,
                         ),
                         Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          child: Text(
-                            "Facility",
-                            style: MyTextStyle.textStyle(
-                                fontSize: 15,
-                                color: ColorData.myColor,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Container(
-                          width: context.mediaQueryWidth,
-                          margin: EdgeInsets.symmetric(horizontal: 20),
-                          padding: EdgeInsets.symmetric(vertical: 12),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  width: 1)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              itemFaciliti(
-                                  FontAwesomeIcons.squareParking, "Parking"),
-                              itemFaciliti(FontAwesomeIcons.wifi, "Wifi"),
-                              itemFaciliti(
-                                  FontAwesomeIcons.personSwimming, "Pool"),
-                              itemFaciliti(FontAwesomeIcons.dumbbell, "GYM"),
+                              InfoHotelComponent(
+                                hotelModel: hotelModel,
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Text(
+                                'Location',
+                                style: MyTextStyle.textStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: ColorData.myColor),
+                              ),
+                              const SizedBox(height: 5),
+                              Container(
+                                width: context.mediaQueryWidth,
+                                padding: const EdgeInsets.all(14),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                        color: ColorData.greyBorderColor)),
+                                child: Column(
+                                  children: [
+                                    MapScreen(listLatLong),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          FontAwesomeIcons.locationDot,
+                                          color: ColorData.myColor,
+                                        ),
+                                        const SizedBox(
+                                          width: 4,
+                                        ),
+                                        SizedBox(
+                                          width: 300,
+                                          child: Text(
+                                            hotelModel.hotelPlaceDetails,
+                                            style: MyTextStyle.textStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.black)
+                                                .copyWith(
+                                                    overflow:
+                                                        TextOverflow.ellipsis),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          child: Text(
-                            "Position",
-                            style: MyTextStyle.textStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: ColorData.myColor),
-                          ),
-                        ),
-                        MapScreen(listLatLong),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
                         ReviewComponent(hotelModel: hotelModel),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Container(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                             horizontal: 20,
                           ),
                           child: Text(
@@ -250,7 +180,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                                 case Status.completed:
                                   final List<HotelModel> hotelList =
                                       hotelViewModel.hotelListByLocation.data!;
-                                  return Container(
+                                  return SizedBox(
                                     width: context.mediaQueryWidth,
                                     height: context.mediaQueryHeight * 0.34,
                                     child: ListView.builder(
@@ -264,7 +194,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                                     ),
                                   );
                                 case Status.loading:
-                                  return Container(
+                                  return SizedBox(
                                     width: context.mediaQueryWidth,
                                     height: 100,
                                     child: Center(
@@ -273,10 +203,8 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                                     ),
                                   );
                                 case Status.error:
-                                  return Container(
-                                    child: Center(
-                                      child: Text("Lỗi!"),
-                                    ),
+                                  return const Center(
+                                    child: Text("Lỗi!"),
                                   );
                                 default:
                                   return Container();
@@ -284,7 +212,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                             },
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 90,
                         ),
                       ],
@@ -292,8 +220,10 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                   ),
                   extendBody: true,
                   bottomNavigationBar: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 10),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10),
                     decoration: BoxDecoration(
                         color: ColorData.myColor,
                         borderRadius: BorderRadius.circular(20)),
@@ -302,9 +232,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          AppFunctions.calculatePrice(
-                                  hotelModel.rooms.first.roomTypes.first) +
-                              "đ/night",
+                          "${AppFunctions.calculatePrice(hotelModel.rooms.first.roomTypes.first)}đ/night",
                           style: MyTextStyle.textStyle(
                               fontSize: 16,
                               color: Colors.white,
@@ -316,7 +244,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                                 arguments: hotelModel);
                           },
                           child: Container(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 10),
                               decoration: BoxDecoration(
                                   color: Colors.white,
@@ -360,7 +288,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
   Widget itemFaciliti(IconData iconData, String text) {
     return Container(
       width: context.mediaQueryWidth * 0.17,
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         vertical: 15,
       ),
       decoration: BoxDecoration(
@@ -373,7 +301,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
             iconData,
             color: ColorData.myColor,
           ),
-          SizedBox(
+          const SizedBox(
             height: 6,
           ),
           Text(
@@ -396,7 +324,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
       },
       child: GestureDetector(
         child: Container(
-          margin: EdgeInsets.only(left: 10, right: 10, top: 10),
+          margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
           decoration: BoxDecoration(
               border: Border.all(color: Colors.black.withOpacity(0.2)),
               borderRadius: BorderRadius.circular(10)),
@@ -414,8 +342,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                           topRight: Radius.circular(
                               10)), // Bo tròn ảnh với bán kính 10
                       image: DecorationImage(
-                        image: NetworkImage(
-                            AppUrl.hotelImage + hotelModel.hotelImage),
+                        image: NetworkImage(hotelModel.hotelImage),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -545,7 +472,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.pinkAccent.withOpacity(0.2)),
-                          child: Icon(
+                          child: const Icon(
                             FontAwesomeIcons.heart,
                             size: 20,
                             color: Colors.pinkAccent,

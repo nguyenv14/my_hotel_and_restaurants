@@ -27,12 +27,10 @@ class CouponViewModel extends ChangeNotifier {
   Future fetchCouponList() async {
     setCouponListResponse(ApiResponse.loading());
     couponRepository.fetchCouponList().then((value) {
-      print("haha");
       List<dynamic> dt = value.data;
       List<CouponModel> areas = CouponModel.getListCoupon(dt);
       setCouponListResponse(ApiResponse.completed(areas));
     }).onError((error, stackTrace) {
-      print("hihi");
       print(error.toString());
       setCouponListResponse(ApiResponse.error(error.toString()));
     });

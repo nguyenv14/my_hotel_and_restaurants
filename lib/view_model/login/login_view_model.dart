@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:my_hotel_and_restaurants/data/response/dto_object.dart';
 import 'package:my_hotel_and_restaurants/model/customer_model.dart';
@@ -73,7 +73,7 @@ class LoginViewModel extends ChangeNotifier {
   }
 
   Future<ObjectDTO> signUp(String customerEmail, String customerPassword,
-      String customerPhone, String customer_name) async {
+      String customerPhone, String customerName) async {
     // final CustomerP
     try {
       setSignUpLoading(true);
@@ -81,7 +81,7 @@ class LoginViewModel extends ChangeNotifier {
         "customer_email": customerEmail,
         "customer_password": customerPassword,
         "customer_phone": customerPhone,
-        "customer_name": customer_name,
+        "customer_name": customerName,
       };
       final response = await authRepository.signUp(body);
       setSignUpLoading(false);
@@ -107,10 +107,9 @@ class LoginViewModel extends ChangeNotifier {
       User? user = userCredential.user;
       // print(user!.email!);
       // print(user.displayName!);
-      var email = user!.email;
       var body = {
         "customer_password": "",
-        "customer_email": user.email!,
+        "customer_email": user!.email!,
         "customer_phone": user.phoneNumber ?? "",
         "customer_name": user.displayName ?? "Người Dùng 1",
       };
@@ -130,7 +129,9 @@ class LoginViewModel extends ChangeNotifier {
       return response;
     } catch (error) {
       ggSignin.disconnect();
-      print('Lỗi đăng nhập: $error');
+      if (kDebugMode) {
+        print('Lỗi đăng nhập: $error');
+      }
       setGGLoading(false);
       throw Exception(error.toString());
     }

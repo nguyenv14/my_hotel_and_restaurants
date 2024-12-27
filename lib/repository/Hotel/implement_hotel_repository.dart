@@ -34,7 +34,7 @@ class HotelRepositoryImp implements HotelRepository {
   Future<ObjectDTO> fetchHotelById(int index) async {
     try {
       ObjectDTO objectDTO = await _apiServices
-          .getGetApiResponse(AppUrl.hotelById + "?hotel_id=$index");
+          .getGetApiResponse("${AppUrl.hotelById}?hotel_id=$index");
       return objectDTO;
     } catch (e) {
       throw Exception(e);
@@ -69,9 +69,7 @@ class HotelRepositoryImp implements HotelRepository {
   Future<ObjectDTO> fetchHotelRecomendation() async {
     try {
       ObjectDTO objectDTO = await _apiServices.getGetApiResponse(
-          AppUrl.hotelRecommendation +
-              "?customer_id=" +
-              CustomerDB.getCustomer()!.customer_id.toString());
+          "${AppUrl.hotelRecommendation}?customer_id=${CustomerDB.getCustomer()!.customer_id}");
       return objectDTO;
     } catch (e) {
       throw Exception(e);

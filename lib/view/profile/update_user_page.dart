@@ -23,7 +23,7 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
       TextEditingController(text: CustomerDB.getCustomer()!.customer_email!);
 
   TextEditingController phoneEdit = TextEditingController(
-      text: "0" + CustomerDB.getCustomer()!.customer_phone.toString());
+      text: "0${CustomerDB.getCustomer()!.customer_phone}");
   bool isChange = false;
 
   @override
@@ -54,7 +54,7 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
 
     phoneEdit.addListener(() {
       if (phoneEdit.text !=
-          "0" + CustomerDB.getCustomer()!.customer_phone.toString()!) {
+          "0${CustomerDB.getCustomer()!.customer_phone.toString()}") {
         setState(() {
           isChange = true;
         });
@@ -73,7 +73,7 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
         child: Stack(children: [
           Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 80,
               ),
               Padding(
@@ -87,21 +87,21 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                         Navigator.pop(context);
                       },
                       child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 8),
                         decoration: BoxDecoration(
                             border: Border.all(
-                                color: Color.fromRGBO(232, 234, 241, 1),
+                                color: const Color.fromRGBO(232, 234, 241, 1),
                                 width: 2),
                             borderRadius: BorderRadius.circular(10)),
-                        child: Icon(
+                        child: const Icon(
                           FontAwesomeIcons.arrowLeft,
                           size: 18,
                           color: Colors.blueGrey,
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 15,
                     ),
                     Text(
@@ -114,7 +114,7 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               itemTextField("Full name", nameEdit),
@@ -134,14 +134,14 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                     customerModel.customer_phone = int.parse(phoneEdit.text);
                     customerProvider.updateCustomer(customerModel);
                     CherryToast.success(
-                      title: Text("Cập nhật thành công!"),
+                      title: const Text("Cập nhật thành công!"),
                     ).show(context);
                   }
                 },
                 child: Container(
                   width: context.mediaQueryWidth * 0.9,
-                  margin: EdgeInsets.symmetric(horizontal: 20),
-                  padding: EdgeInsets.symmetric(vertical: 15),
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(vertical: 15),
                   decoration: BoxDecoration(
                       color: isChange == true ? Colors.blueGrey : Colors.grey,
                       borderRadius: BorderRadius.circular(40)),
@@ -162,10 +162,10 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
   Widget itemTextField(
       String text, TextEditingController textEditingController) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
-          color: Color.fromRGBO(245, 246, 249, 1),
+          color: const Color.fromRGBO(245, 246, 249, 1),
           borderRadius: BorderRadius.circular(20)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,13 +174,13 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
             text,
             style: MyTextStyle.textStyle(fontSize: 14, color: Colors.black),
           ),
-          Container(
+          SizedBox(
             height: 30,
             child: TextField(
               controller: textEditingController,
               style:
                   MyTextStyle.textStyle(fontSize: 16, color: Colors.blueGrey),
-              decoration: InputDecoration(border: InputBorder.none),
+              decoration: const InputDecoration(border: InputBorder.none),
             ),
           )
         ],

@@ -1,5 +1,3 @@
-import 'package:my_hotel_and_restaurants/data/response/app_url.dart';
-
 class GalleryHotelModel {
   final int galleryHotelId;
   final int hotelId;

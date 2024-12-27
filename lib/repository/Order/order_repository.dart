@@ -1,10 +1,10 @@
 import 'package:my_hotel_and_restaurants/data/response/dto_object.dart';
 
 abstract class OrderRepository {
-  Future<ObjectDTO> getListOrderByStatus(int customer_id, int order_status);
+  Future<ObjectDTO> getListOrderByStatus(int customerId, int orderStatus);
 
   Future<ObjectDTO> getListOrderRestaurantByStatus(
-      int customer_id, int order_status);
+      int customerId, int orderStatus);
 
   Future<ObjectDTO> cancelOrderByCustomer(Map<Object?, Object> data);
 

@@ -10,7 +10,7 @@ class CustomerDB {
 
   static CustomerModel? getCustomer() {
     final box = GetStorage();
-    CustomerModel? customer = CustomerModel.fromJson(box.read("USER") ?? null!);
+    CustomerModel? customer = CustomerModel.fromJson(box.read("USER"));
     return customer;
   }
 

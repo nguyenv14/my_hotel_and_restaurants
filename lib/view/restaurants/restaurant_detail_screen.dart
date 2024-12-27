@@ -351,8 +351,9 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                                                   GestureDetector(
                                                     onTap: () {
                                                       setModalState(() {
-                                                        if (quantity > 1)
+                                                        if (quantity > 1) {
                                                           quantity--;
+                                                        }
                                                       });
                                                     },
                                                     child: Container(

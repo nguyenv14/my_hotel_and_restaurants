@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:lottie/lottie.dart';
 import 'package:my_hotel_and_restaurants/configs/color.dart';
 import 'package:my_hotel_and_restaurants/configs/text_style.dart';
-import 'package:my_hotel_and_restaurants/data/response/status.dart';
-import 'package:my_hotel_and_restaurants/main.dart';
-import 'package:my_hotel_and_restaurants/view/components/button_select_component.dart';
-import 'package:my_hotel_and_restaurants/view/components/search_card_component.dart';
 import 'package:my_hotel_and_restaurants/view/favourite/favourite_hotel_page.dart';
 import 'package:my_hotel_and_restaurants/view/favourite/favourite_restaurant_page.dart';
 import 'package:my_hotel_and_restaurants/view_model/favourite_view_model.dart';

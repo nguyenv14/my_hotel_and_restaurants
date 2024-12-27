@@ -9,14 +9,10 @@ class OrderRepositoryImp implements OrderRepository {
 
   @override
   Future<ObjectDTO> getListOrderByStatus(
-      int customer_id, int order_status) async {
+      int customerId, int orderStatus) async {
     try {
       ObjectDTO objectDTO = await _apiServices.getGetApiResponse(
-          AppUrl.orderListByStatus +
-              "?customer_id=" +
-              customer_id.toString() +
-              "&order_status=" +
-              order_status.toString());
+          "${AppUrl.orderListByStatus}?customer_id=$customerId&order_status=$orderStatus");
       return objectDTO;
     } catch (e) {
       throw Exception(e);
@@ -82,14 +78,10 @@ class OrderRepositoryImp implements OrderRepository {
 
   @override
   Future<ObjectDTO> getListOrderRestaurantByStatus(
-      int customer_id, int order_status) async {
+      int customerId, int orderStatus) async {
     try {
       ObjectDTO objectDTO = await _apiServices.getGetApiResponse(
-          AppUrl.orderRestaurantListByStatus +
-              "?customer_id=" +
-              customer_id.toString() +
-              "&order_status=" +
-              order_status.toString());
+          "${AppUrl.orderRestaurantListByStatus}?customer_id=$customerId&order_status=$orderStatus");
       return objectDTO;
     } catch (e) {
       throw Exception(e);

@@ -1,4 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cherry_toast/cherry_toast.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
@@ -14,6 +16,7 @@ import 'package:my_hotel_and_restaurants/model/hotel_model.dart';
 import 'package:my_hotel_and_restaurants/model/order_model.dart';
 import 'package:my_hotel_and_restaurants/model/room_model.dart';
 import 'package:my_hotel_and_restaurants/model/type_room_model.dart';
+import 'package:my_hotel_and_restaurants/repository/stripe_service.dart';
 import 'package:my_hotel_and_restaurants/utils/app_functions.dart';
 import 'package:my_hotel_and_restaurants/utils/user_db.dart';
 import 'package:my_hotel_and_restaurants/view/checkout_hotel/components/alert_dialog_coupon.dart';
@@ -160,22 +163,67 @@ class _CheckoutPageState extends State<CheckoutPage> {
               GestureDetector(
                 onTap: () {
                   if (_result == 4) {
-                    orderViewModel.checkOut(
-                        CustomerDB.getCustomer()!.customer_id!,
-                        widget.roomTypeModel.typeRoomId,
-                        AppFunctions.formatDate(dataTimeRange.start),
-                        AppFunctions.formatDate(dataTimeRange.end),
-                        AppFunctions.generateOrderCode(),
-                        requestSpecial.text != ""
-                            ? requestSpecial.text
-                            : "Không có",
-                        valuefirst == 1
-                            ? 1
-                            : valuesecond == 2
-                                ? 2
-                                : 0,
-                        couponModel.couponId,
-                        dataTimeRange.duration.inDays);
+                    orderViewModel
+                        .checkOut(
+                            CustomerDB.getCustomer()!.customer_id!,
+                            widget.roomTypeModel.typeRoomId,
+                            AppFunctions.formatDate(dataTimeRange.start),
+                            AppFunctions.formatDate(dataTimeRange.end),
+                            AppFunctions.generateOrderCode(),
+                            requestSpecial.text != ""
+                                ? requestSpecial.text
+                                : "Không có",
+                            valuefirst == 1
+                                ? 1
+                                : valuesecond == 2
+                                    ? 2
+                                    : 0,
+                            couponModel.couponId,
+                            dataTimeRange.duration.inDays)
+                        .onError(
+                      (error, stackTrace) {
+                        CherryToast.error(
+                                title:
+                                    const Text("Thanh toán không thành công!"))
+                            .show(context);
+                      },
+                    );
+                  } else if (_result == 1) {
+                    StripeService.instance
+                        .makePayment(priceTotal)
+                        .then((value) {
+                      // Payment successful, proceed with checkout
+                      print(value);
+                      if (value == true) {
+                        orderViewModel.checkOut(
+                          CustomerDB.getCustomer()!.customer_id!,
+                          widget.roomTypeModel.typeRoomId,
+                          AppFunctions.formatDate(dataTimeRange.start),
+                          AppFunctions.formatDate(dataTimeRange.end),
+                          AppFunctions.generateOrderCode(),
+                          requestSpecial.text != ""
+                              ? requestSpecial.text
+                              : "Không có",
+                          valuefirst == 1
+                              ? 1
+                              : valuesecond == 2
+                                  ? 2
+                                  : 0,
+                          couponModel.couponId,
+                          dataTimeRange.duration.inDays,
+                        );
+                      } else {
+                        CherryToast.error(
+                                title: const Text(
+                                    "Thanh toán online đang gặp lỗi!"))
+                            .show(context);
+                      }
+                    }).catchError((error) {
+                      CherryToast.error(
+                              title:
+                                  const Text("Thanh toán online đang gặp lỗi!"))
+                          .show(context);
+                    });
                   }
                 },
                 child: Container(

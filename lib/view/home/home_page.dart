@@ -13,6 +13,7 @@ import 'package:my_hotel_and_restaurants/main.dart';
 import 'package:my_hotel_and_restaurants/model/banner_model.dart';
 import 'package:my_hotel_and_restaurants/model/hotel_model.dart';
 import 'package:my_hotel_and_restaurants/model/restaurant_model.dart';
+import 'package:my_hotel_and_restaurants/repository/stripe_service.dart';
 import 'package:my_hotel_and_restaurants/utils/app_functions.dart';
 import 'package:my_hotel_and_restaurants/utils/user_db.dart';
 import 'package:my_hotel_and_restaurants/view/checkout_hotel/order_restaurant/receipt_page.dart';
@@ -181,7 +182,10 @@ class _HomePageState extends State<HomePage> {
                                   icon: const Icon(Icons.notifications_none),
                                   color: ColorData.myColor,
                                   iconSize: 30,
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    // print("aaaa");
+                                    StripeService.instance.makePayment(1000);
+                                  },
                                 ),
                               ),
                             ),

@@ -1,10 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_hotel_and_restaurants/configs/color.dart';
 import 'package:my_hotel_and_restaurants/configs/text_style.dart';
 import 'package:my_hotel_and_restaurants/model/hotel_model.dart';
-import 'package:my_hotel_and_restaurants/model/room_model.dart';
 import 'package:my_hotel_and_restaurants/view/components/button_leading_component.dart';
 import 'package:my_hotel_and_restaurants/view/product/components/room_hotel_component.dart';
 

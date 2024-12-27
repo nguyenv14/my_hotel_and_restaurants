@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:my_hotel_and_restaurants/data/response/api_response.dart';
 import 'package:my_hotel_and_restaurants/model/customer_menu_item.dart';
 import 'package:my_hotel_and_restaurants/model/customer_model.dart';
@@ -89,6 +86,7 @@ class OrderViewModel extends ChangeNotifier {
       "customer_id": customerId.toString(),
       "order_id": orderId.toString()
     };
+    print(body.toString());
     orderRepository.cancelOrderByCustomer(body).then((value) {
       if (value.statusCode == 200) {
         List<dynamic> dt = value.data;

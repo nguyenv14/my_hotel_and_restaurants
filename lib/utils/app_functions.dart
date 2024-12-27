@@ -196,4 +196,8 @@ class AppFunctions {
     }
     return false;
   }
+
+  static int convertVNDToUSD(num vndAmount) {
+    return (vndAmount / 25000).toInt();
+  }
 }

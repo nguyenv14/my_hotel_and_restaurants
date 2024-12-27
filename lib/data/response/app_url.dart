@@ -1,5 +1,5 @@
 class AppUrl {
-  static var base = 'http://192.168.1.21/DoAnCoSo2/';
+  static var base = 'http://192.168.128.11/DoAnCoSo2/';
   static var baseUrl = '${base}api/';
   static var commonUrl = '${base}api/common/';
   static var testApi = "${baseUrl}get-brand";

@@ -3,7 +3,6 @@ import 'package:lottie/lottie.dart';
 import 'package:my_hotel_and_restaurants/data/response/status.dart';
 import 'package:my_hotel_and_restaurants/main.dart';
 import 'package:my_hotel_and_restaurants/view/components/search_card_component.dart';
-import 'package:my_hotel_and_restaurants/view_model/favourite_restaurant_view_model.dart';
 import 'package:my_hotel_and_restaurants/view_model/favourite_view_model.dart';
 import 'package:provider/provider.dart';
 
